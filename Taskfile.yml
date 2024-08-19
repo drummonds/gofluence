@@ -1,0 +1,38 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  test_openapi:
+    cmds:
+      - go run github.com/getkin/kin-openapi/cmd/validate@latest openapi-v2.v3.json 
+
+  gen:
+    cmds:
+      - go generate api/generate.go
+
+  get_api:
+    cmds:
+      # - wget https://dac-static.atlassian.com/cloud/confluence/openapi-v2.v3.json?_v=1.7356.0-0.1309.0
+      - rm -f openapi-v2.v3.json 
+      - wget https://dac-static.atlassian.com/cloud/confluence/openapi-v2.v3.json
+
+  edit_build:
+    cmds:
+      - go build cmd/api_fmt/main.go 
+
+  edit_api:
+    deps: [edit_build]
+    cmds:
+      - rm -f confluence.json 
+      - ./main
+
+  dia:
+    cmds:
+      - task: get_api
+      - task: edit_api
+      - task: gen
+      - go vet ./...
