@@ -42,19 +42,32 @@ func main() {
 	}
 	fmt.Printf("List of blogs %+v and err %v\n", blogs, err)
 
-	status := gofluence.GetSpacesParamsStatusCurrent
-	params := gofluence.GetSpacesParams{Status: &status}
-	spaces, err := nc.GetSpaces(ctx, &params)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("List of spaces %+v and err %v\n", spaces, err)
-
 	pageParams := gofluence.GetPageByIdParams{}
 	page, err := nc.GetPageById(ctx, 98566152, &pageParams)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Pages %+v and err %v\n", page, err)
+
+	// Instead of return HTTP requests is probably better to parse them
+	ncr, err := gofluence.NewClientWithResponses(host, gofluence.WithRequestEditorFn(basicAuth.Intercept))
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Result client with response%+v and err %v\n", ncr, err)
+
+	status := gofluence.GetSpacesParamsStatusCurrent
+	var limit int32 = 99
+	params := gofluence.GetSpacesParams{Status: &status, Limit: &limit}
+	spacesResponse, err := ncr.GetSpacesWithResponse(ctx, &params)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("List of spaces\n")
+	spaces := spacesResponse.JSON200.Results
+	for i, v := range *spaces {
+		fmt.Printf("  %v %v %v\n", i, *v.Id, *v.Name)
+	}
 
 }
