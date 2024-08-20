@@ -33,7 +33,7 @@ func RemoveAnyOff(g *gabs.Container, dotPath string) {
 }
 
 // Doesn't create enum structures
-// Workaorund is to replace with strings
+// Workaround is to replace with strings
 // panics on error
 func FixEnum(g *gabs.Container, dotPath string) {
 	err := g.DeleteP(dotPath + ".enum")
