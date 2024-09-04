@@ -42,11 +42,6 @@ func (fc *FatClient) UpdatePage(ctx context.Context, ancestorId, title, body str
 		return nil, err
 	}
 	id, versionId, exists := fc.PageExistsByTitle(ctx, &ids, title)
-	if versionId == nil || id == nil {
-		return resp, fmt.Errorf("versionId or spaceId are nil for ancestor %v", ancestorId)
-	}
-	resp.Id = *id
-	resp.Version = *versionId
 	if !exists {
 		createPageParams := gofluence.CreatePageParams{}
 		var wiki gofluence.PageBodyWriteRepresentation = "wiki"
@@ -66,6 +61,8 @@ func (fc *FatClient) UpdatePage(ctx context.Context, ancestorId, title, body str
 		resp.Version = *versionNumber
 		return resp, err
 	}
+	resp.Id = *id
+	resp.Version = *versionId
 	// If it doesn't exist then Update page to this ancestor
 	var thisId int64
 	thisId, err = strconv.ParseInt(resp.Id, 10, 64)
