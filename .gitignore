@@ -19,6 +19,9 @@
 go.work
 go.work.sum
 
+# Go debug file
+__debug*
+
 # env file
 .env
 

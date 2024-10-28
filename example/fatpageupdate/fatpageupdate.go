@@ -1,7 +1,5 @@
-// Aim is to create a page, update and then delete it.
-// Switching to using a client with responses
-// Highlighting JSON200 unmarshalling of return values
-// Not using the with body versions which use an unmarshalled body
+// Aim is to create a page or update it.
+// Testing fat client for ease of use
 package main
 
 import (
