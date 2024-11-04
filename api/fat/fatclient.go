@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/drummonds/gofluence/api"
 	gofluence "github.com/drummonds/gofluence/api"
 	"github.com/oapi-codegen/oapi-codegen/v2/pkg/securityprovider"
 )
@@ -164,4 +165,36 @@ func (fc *FatClient) PageExistsByTitle(ctx context.Context, spacesId *[]int64, t
 	}
 	versionNumber := version.Number
 	return id, versionNumber, true
+}
+
+func (fc *FatClient) GetPageBody(ctx context.Context, ancestorId, title string) (api.PageBulk, error) {
+	var result api.PageBulk
+	// Test the Ancestor page exists and get spaceID
+	spaceId, _, exists := fc.PageExistsById(ctx, ancestorId)
+	if spaceId == nil {
+		return result, fmt.Errorf("spaceId are nil for ancestor %v", ancestorId)
+	}
+	if !exists {
+		return result, fmt.Errorf("ancestor %v does not exist", ancestorId)
+	}
+	ids, err := idToIds(*spaceId)
+	if err != nil {
+		return result, err
+	}
+	var wiki gofluence.PrimaryBodyRepresentation = "atlas_doc_format"
+	pageParams := gofluence.GetPagesParams{SpaceId: &ids, Title: &title, BodyFormat: &wiki}
+	pageResponse, err := fc.Client.GetPagesWithResponse(ctx, &pageParams)
+	if err != nil {
+		panic(err)
+	}
+	json := (*pageResponse).JSON200
+	if json == nil {
+		return result, fmt.Errorf("no json response")
+	}
+	results := json.Results
+	if results == nil {
+		return result, fmt.Errorf("no results in json %v", json)
+	}
+	result = (*results)[0]
+	return result, nil
 }

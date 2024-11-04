@@ -27,3 +27,6 @@ __debug*
 
 # Visual studio
 .vscode
+
+# Temp files
+.playpen*

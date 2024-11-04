@@ -17,7 +17,7 @@ Or just `task dia` to run all the steps in sequence.
 
 ## Code
 
-There is /api which is the genereated interface from the specification
+There is /api which is the generated interface from the specification
 
 There is also /api/fat which is a fatter client to do a specific task.  
 So *UpdatePage* will create or update a page given an ancestor page id, a title and a new body with a representation
@@ -29,6 +29,20 @@ The examples have been tested by locally.
 
 ### first.go
 This shows the simplest calls to Confluence to confirm it is working.  
+
+## Atlassian Document Format (ADF, atlas_doc_format)
+
+One snag with this is that I was using a nice simple Wiki format but internally if you create
+a page with Wiki format it gets converted inside Confluence to ADF.  So you if you get a page
+created with Wiki you will read back an ADF document.
+
+The ADF format can be helpful.  For instance the Wiki format does not allow varying column widths in tables which can be done in ADF.
+
+The source file is here https://unpkg.com/@atlaskit/adf-schema@44.4.0/dist/json-schema/v1/full.json.  Due to time constraints I haven't made
+a full download and update cycle like I did with the api.
+
+The JSON schema was downloaded and turned into a go file with https://github.com/omissis/go-jsonschema.
+
 
 
 ## Change Log

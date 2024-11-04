@@ -14,6 +14,7 @@ import (
 func getBody() string {
 	newBody := fmt.Sprintf(`h3. Hello new page
 h1. From the FAT client
+On live demo
 Has been updated again , at %s
 AUTO GENERATED So don't bother editing
 

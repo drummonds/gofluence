@@ -343,6 +343,33 @@
         },
         "required": true
       },
+      "FolderCreateRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "parentId": {
+                  "description": "The parent content ID of the folder.",
+                  "type": "string"
+                },
+                "spaceId": {
+                  "description": "ID of the space.",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Title of the folder.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "spaceId"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      },
       "LiveEditContentClassificationLevelResetRequest": {
         "content": {
           "application/json": {
@@ -690,7 +717,8 @@
           "page",
           "whiteboard",
           "database",
-          "embed"
+          "embed",
+          "folder"
         ],
         "type": "string"
       },
@@ -2262,6 +2290,67 @@
         },
         "type": "object"
       },
+      "FolderLinks": {
+        "properties": {
+          "webui": {
+            "description": "Web UI link of the content.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "FolderSingle": {
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/FolderLinks"
+          },
+          "authorId": {
+            "description": "The account ID of the user who created this folder.",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Date and time when the folder was created. In format \"YYYY-MM-DDTHH:mm:ss.sssZ\".",
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "description": "ID of the folder.",
+            "type": "string"
+          },
+          "ownerId": {
+            "description": "The account ID of the user who owns this folder.",
+            "type": "string"
+          },
+          "parentId": {
+            "description": "ID of the parent content, or null if there is no parent content.",
+            "type": "string"
+          },
+          "parentType": {
+            "$ref": "#/components/schemas/ParentContentType"
+          },
+          "position": {
+            "description": "Position of the folder within the given parent page tree.",
+            "format": "int32",
+            "nullable": true,
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ContentStatus"
+          },
+          "title": {
+            "description": "Title of the folder.",
+            "type": "string"
+          },
+          "type": {
+            "description": "The content type of the object.",
+            "type": "string"
+          },
+          "version": {
+            "$ref": "#/components/schemas/Version"
+          }
+        },
+        "type": "object"
+      },
       "FooterCommentModel": {
         "properties": {
           "_links": {
@@ -3027,7 +3116,8 @@
           "page",
           "whiteboard",
           "database",
-          "embed"
+          "embed",
+          "folder"
         ],
         "type": "string"
       },
@@ -3085,6 +3175,10 @@
           "createdAt": {
             "description": "Date and time when the Smart Link in the content tree was created. In format \"YYYY-MM-DDTHH:mm:ss.sssZ\".",
             "format": "date-time",
+            "type": "string"
+          },
+          "embedUrl": {
+            "description": "The embedded URL of the Smart Link. If the Smart Link does not have an embedded URL, this property will not be included in the response.",
             "type": "string"
           },
           "id": {
@@ -3253,6 +3347,7 @@
                   "whiteboard",
                   "database",
                   "embed",
+                  "folder",
                   "space",
                   "application",
                   "userProfile"
@@ -3814,6 +3909,7 @@
               "delete:custom-content:confluence": "Delete custom content.",
               "delete:database:confluence": "Delete databases.",
               "delete:embed:confluence": "Delete Smart Links in the content tree.",
+              "delete:folder:confluence": "Delete folders.",
               "delete:page:confluence": "Delete pages and blog posts.",
               "delete:whiteboard:confluence": "Delete whiteboards.",
               "read:attachment:confluence": "View attachments and their properties.",
@@ -3821,6 +3917,7 @@
               "read:custom-content:confluence": "View custom content and their properties.",
               "read:database:confluence": "View databases and their properties.",
               "read:embed:confluence": "View Smart Links in the content tree and their properties.",
+              "read:folder:confluence": "View folders and their properties.",
               "read:page:confluence": "View pages and blogposts and their properties.",
               "read:space:confluence": "View spaces and their properties.",
               "read:task:confluence": "View tasks.",
@@ -3829,6 +3926,7 @@
               "write:custom-content:confluence": "Create and update custom content and their properties.",
               "write:database:confluence": "Create and update databases and their properties.",
               "write:embed:confluence": "Create and update Smart Links in the content tree and their properties.",
+              "write:folder:confluence": "Create and update folders and their properties.",
               "write:page:confluence": "Create and update pages and blog posts and their properties.",
               "write:space:confluence": "Create and update spaces and their properties.",
               "write:whiteboard:confluence": "Create and update whiteboards and their properties."
@@ -12275,6 +12373,861 @@
             "scopes": [
               "read:embed:confluence",
               "write:embed:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      }
+    },
+    "/folders": {
+      "post": {
+        "description": "Creates a folder in the space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the corresponding space. Permission to create a folder in the space.",
+        "operationId": "createFolder",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/FolderCreateRequest"
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/FolderSingle"
+                    },
+                    {
+                      "properties": {
+                        "_links": {
+                          "properties": {
+                            "base": {
+                              "description": "Base url of the Confluence site.",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Returned if the folder was successfully created in the content tree."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing from the request."
+          },
+          "404": {
+            "description": "Returned if:\n- The space does not exist\n- The user does not have permissions to view the space\n- The user does not have the needed permissions to create a folder in the provided space"
+          },
+          "413": {
+            "content": {},
+            "description": "Returned if the request is too large in size (over 5 MB)."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "write:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Create folder",
+        "tags": [
+          "Folder"
+        ],
+        "x-atlassian-connect-scope": "WRITE",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "write:folder:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      }
+    },
+    "/folders/{folder-id}/properties/{property-id}": {
+      "delete": {
+        "description": "Deletes a content property for a folder by its id. \n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the folder.",
+        "operationId": "deleteFolderPropertyById",
+        "parameters": [
+          {
+            "description": "The ID of the folder the property belongs to.",
+            "in": "path",
+            "name": "folder-id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The ID of the property to be deleted.",
+            "in": "path",
+            "name": "property-id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returned if the content property was deleted successfully."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nspecified folder or the folder was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:folder:confluence",
+              "write:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Delete content property for folder by id",
+        "tags": [
+          "Content Properties"
+        ],
+        "x-atlassian-connect-scope": "WRITE",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:folder:confluence",
+              "write:folder:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      },
+      "get": {
+        "description": "Retrieves a specific Content Property by ID that is attached to a specified folder.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the folder.",
+        "operationId": "getFolderContentPropertiesById",
+        "parameters": [
+          {
+            "description": "The ID of the folder for which content properties should be returned.",
+            "in": "path",
+            "name": "folder-id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The ID of the content property being requested.",
+            "in": "path",
+            "name": "property-id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentProperty"
+                }
+              }
+            },
+            "description": "Returned if the requested content property is successfully retrieved."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nspecified folder, the folder was not found, or the property was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Get content property for folder by id",
+        "tags": [
+          "Content Properties"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:folder:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      },
+      "put": {
+        "description": "Update a content property for a folder by its id. \n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to edit the folder.",
+        "operationId": "updateFolderPropertyById",
+        "parameters": [
+          {
+            "description": "The ID of the folder the property belongs to.",
+            "in": "path",
+            "name": "folder-id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The ID of the property to be updated.",
+            "in": "path",
+            "name": "property-id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentPropertyUpdateRequest"
+              }
+            }
+          },
+          "description": "The content property to be updated.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentProperty"
+                }
+              }
+            },
+            "description": "Returned if the content property was updated successfully."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nspecified folder or the folder was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:folder:confluence",
+              "write:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Update content property for folder by id",
+        "tags": [
+          "Content Properties"
+        ],
+        "x-atlassian-connect-scope": "WRITE",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:folder:confluence",
+              "write:folder:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      }
+    },
+    "/folders/{id}": {
+      "delete": {
+        "description": "Delete a folder by id.\n\nDeleting a folder moves the folder to the trash, where it can be restored later\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the folder and its corresponding space.\nPermission to delete folders in the space.",
+        "operationId": "deleteFolder",
+        "parameters": [
+          {
+            "description": "The ID of the folder to be deleted.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "content": {},
+            "description": "Returned if the folder was successfully deleted."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "description": "Returned if:\n- The provided folder does not exist\n- The user does not have permissions to view the folder\n- The user does not have the needed permissions to delete folder in the space"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "delete:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Delete folder",
+        "tags": [
+          "Folder"
+        ],
+        "x-atlassian-connect-scope": "DELETE",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "delete:folder:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      },
+      "get": {
+        "description": "Returns a specific folder.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the folder and its corresponding space.",
+        "operationId": "getFolderById",
+        "parameters": [
+          {
+            "description": "The ID of the folder to be returned.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/FolderSingle"
+                    },
+                    {
+                      "properties": {
+                        "_links": {
+                          "properties": {
+                            "base": {
+                              "description": "Base url of the Confluence site.",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Returned if the requested folder is returned."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nrequested folder or the folder was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Get folder by id",
+        "tags": [
+          "Folder"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:folder:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      }
+    },
+    "/folders/{id}/ancestors": {
+      "get": {
+        "description": "Returns all ancestors for a given folder by ID in top-to-bottom order (that is, the highest ancestor is\nthe first item in the response payload). The number of results is limited by the `limit` parameter and additional results \n(if available) will be available by calling this endpoint with the ID of first ancestor in the response payload.\n\nThis endpoint returns minimal information about each ancestor. To fetch more details, use a related endpoint, such\nas [Get folder by id](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-smart-link/#api-folders-id-get).\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).\nPermission to view the folder and its corresponding space",
+        "operationId": "getFolderAncestors",
+        "parameters": [
+          {
+            "description": "The ID of the folder.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Maximum number of items per result to return. If more results exist, call the endpoint with the highest ancestor's ID to fetch the next set of results.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 25,
+              "format": "int32",
+              "maximum": 250,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "results": {
+                      "items": {
+                        "$ref": "#/components/schemas/Ancestor"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "title": "MultiEntityResult\u003cAncestor\u003e",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Returned if the requested ancestors are returned."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "description": "Returned if the calling user does not have permission to view the\nspecified folder or the folder was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:content.metadata:confluence"
+            ]
+          }
+        ],
+        "summary": "Get all ancestors of folder",
+        "tags": [
+          "Ancestors"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:content.metadata:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      }
+    },
+    "/folders/{id}/operations": {
+      "get": {
+        "description": "Returns the permitted operations on specific folder.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the folder and its corresponding space.",
+        "operationId": "getFolderOperations",
+        "parameters": [
+          {
+            "description": "The ID of the folder for which operations should be returned.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermittedOperationsResponse"
+                }
+              }
+            },
+            "description": "Returned if the requested operations are returned."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nrequested folder or the folder was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Get permitted operations for a folder",
+        "tags": [
+          "Operation"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:folder:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      }
+    },
+    "/folders/{id}/properties": {
+      "get": {
+        "description": "Retrieves Content Properties tied to a specified folder.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the folder.",
+        "operationId": "getFolderContentProperties",
+        "parameters": [
+          {
+            "description": "The ID of the folder for which content properties should be returned.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Filters the response to return a specific content property with matching key (case sensitive).",
+            "in": "query",
+            "name": "key",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Used to sort the result by a particular field.",
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContentPropertySortOrder"
+            }
+          },
+          {
+            "description": "Used for pagination, this opaque cursor will be returned in the `next` URL in the `Link` response header. Use the relative URL in the `Link` header to retrieve the `next` set of results.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of attachments per result to return. If more results exist, use the `Link` header to retrieve a relative URL that will return the next set of results.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 25,
+              "format": "int32",
+              "maximum": 250,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_links": {
+                      "$ref": "#/components/schemas/MultiEntityLinks"
+                    },
+                    "results": {
+                      "items": {
+                        "$ref": "#/components/schemas/ContentProperty"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "title": "MultiEntityResult\u003cContentProperty\u003e",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Returned if the requested content properties are successfully retrieved.",
+            "headers": {
+              "Link": {
+                "description": "This header contains URL(s) within angle brackets and a relation description for each URL, describing how the provided URL relates to the incoming request's URL. For example, rel=\"next\" would be the URL necessary to get the next page of information. Example response header format: `Link: \u003c/wiki/api/v2/embeds/\u003cid\u003e/properties?cursor=\u003copaque cursor token\u003e\u003e; rel=\"next\", \u003chttps://site.atlassian.net/wiki\u003e; rel=\"base\"`\n",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nspecified folder or the folder was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Get content properties for folder",
+        "tags": [
+          "Content Properties"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:folder:confluence"
+            ],
+            "state": "Current"
+          }
+        ]
+      },
+      "post": {
+        "description": "Creates a new content property for a folder.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to update the folder.",
+        "operationId": "createFolderProperty",
+        "parameters": [
+          {
+            "description": "The ID of the folder to create a property for.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentPropertyCreateRequest"
+              }
+            }
+          },
+          "description": "The content property to be created",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentProperty"
+                }
+              }
+            },
+            "description": "Returned if the content property was created successfully."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nspecified folder or the folder was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:folder:confluence",
+              "write:folder:confluence"
+            ]
+          }
+        ],
+        "summary": "Create content property for folder",
+        "tags": [
+          "Content Properties"
+        ],
+        "x-atlassian-connect-scope": "WRITE",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": false
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:folder:confluence",
+              "write:folder:confluence"
             ],
             "state": "Current"
           }
@@ -21521,6 +22474,10 @@
     {
       "description": "",
       "name": "Data Policies"
+    },
+    {
+      "description": "",
+      "name": "Folder"
     },
     {
       "description": "",
