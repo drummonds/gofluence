@@ -31,22 +31,23 @@ func NewClient(domain, user, token string) (*FatClient, error) {
 	return fc, err
 }
 
-func (fc *FatClient) UpdatePage(ctx context.Context, ancestorId, title, body string) (*UpdatePageResponse, error) {
+func (fc *FatClient) UpdatePage(ctx context.Context, ancestorId, title, body, representation string) (*UpdatePageResponse, error) {
 	resp := new(UpdatePageResponse)
 	// Test the Ancestor page exists and get spaceID
-	spaceId, versionId, exists := fc.PageExistsById(ctx, ancestorId)
-	if versionId == nil || spaceId == nil {
+	spaceId, ancestorVersionId, exists := fc.PageExistsById(ctx, ancestorId)
+	if ancestorVersionId == nil || spaceId == nil {
 		return resp, fmt.Errorf("versionId or spaceId are nil for ancestor %v", ancestorId)
 	}
 	ids, err := idToIds(*spaceId)
 	if err != nil {
 		return nil, err
 	}
+	var bodyRepresentation gofluence.PageBodyWriteRepresentation
+	bodyRepresentation = gofluence.PageBodyWriteRepresentation(representation)
 	id, versionId, exists := fc.PageExistsByTitle(ctx, &ids, title)
 	if !exists {
 		createPageParams := gofluence.CreatePageParams{}
-		var wiki gofluence.PageBodyWriteRepresentation = "wiki"
-		coreBody := gofluence.PageBodyWrite{Representation: &wiki, Value: &body}
+		coreBody := gofluence.PageBodyWrite{Representation: &bodyRepresentation, Value: &body}
 
 		createBody := gofluence.CreatePageJSONRequestBody{SpaceId: *spaceId, Title: &title, Body: &coreBody, ParentId: &ancestorId}
 		create_response, err := fc.Client.CreatePageWithResponse(ctx, &createPageParams, createBody)
@@ -62,6 +63,7 @@ func (fc *FatClient) UpdatePage(ctx context.Context, ancestorId, title, body str
 		resp.Version = *versionNumber
 		return resp, err
 	}
+	// Update page path
 	resp.Id = *id
 	resp.Version = *versionId
 	// If it doesn't exist then Update page to this ancestor
@@ -71,9 +73,8 @@ func (fc *FatClient) UpdatePage(ctx context.Context, ancestorId, title, body str
 		return nil, err
 	}
 	newVersionNumber := resp.Version + 1
-	var wiki gofluence.PageBodyWriteRepresentation = "wiki"
 	updateBody := gofluence.PageBodyWrite{
-		Representation: &wiki,
+		Representation: &bodyRepresentation,
 		Value:          &body}
 	updateBodyJSON := gofluence.UpdatePageJSONBody{}
 	updateBodyJSON.Id = resp.Id
@@ -88,7 +89,7 @@ func (fc *FatClient) UpdatePage(ctx context.Context, ancestorId, title, body str
 		return resp, err
 	}
 	if update_response.HTTPResponse.StatusCode != 200 {
-		return resp, err
+		return resp, fmt.Errorf("error status %v ", update_response.HTTPResponse.StatusCode)
 	}
 	versionNumber := update_response.JSON200.Version.Number
 	resp.Version = *versionNumber

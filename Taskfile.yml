@@ -21,14 +21,16 @@ tasks:
       - wget https://dac-static.atlassian.com/cloud/confluence/openapi-v2.v3.json
 
   gen_adf:
-    summary: Generate go structure for serialising and deserialising Atlassanian Document Format.
+    summary: Generate go structure for serialising and deserialising Atlassian Document Format.
     cmds:
       # - wget https://unpkg.com/@atlaskit/adf-schema@44.4.0/dist/json-schema/v1/full.json
-      # - rm -f openapi-v2.v3.json 
-      - go-jsonschema \
-        --schema-package=https://github.com/drummonds/gofluence/adf=github.com/drummonds/gofluence/adf \
-        --schema-output=https://github.com/drummonds/gofluence/adf=adf/adf.go \
-        AtlasDocFormat.json
+      - go-jsonschema -p adf -o ./api/adf/adf.go adf.json
+
+  edit_adf:
+    cmds:
+      - go build -o ./edit_fmt cmd/adf_fmt/main.go 
+      - rm -f adf.json 
+      - ./edit_fmt
 
   edit_build:
     cmds:

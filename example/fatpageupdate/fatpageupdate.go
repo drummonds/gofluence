@@ -12,16 +12,16 @@ import (
 )
 
 func getBody() string {
-	newBody := fmt.Sprintf(`h3. Hello new page
-h1. From the FAT client
-On live demo
-Has been updated again , at %s
-AUTO GENERATED So don't bother editing
+	newBody := fmt.Sprintf(`h3. Hello new Wiki page
+	h1. From the FAT client WIKI format
 
-|| Key || Meaning ||
-|🖥️| host DNS entry works is available|
-|❌~DNS~| No host DNS entry, may not exist|
-|🟢| API endpoint working|
+	Has been updated again , at %s
+	AUTO GENERATED So don't bother editing
+
+	|| Key || Meaning ||
+	|🖥️| host DNS entry works is available|
+	|❌~DNS~| No host DNS entry, may not exist|
+	|🟢| API endpoint working|
 `, time.Now().Format(time.RFC3339))
 	return newBody
 }
@@ -40,6 +40,6 @@ func main() {
 
 	ancestorStr := os.Getenv("CONF_ANCESTOR_ID")
 	title := "Test gofluence"
-	fc.UpdatePage(ctx, ancestorStr, title, getBody())
+	fc.UpdatePage(ctx, ancestorStr, title, getBody(), "wiki")
 
 }

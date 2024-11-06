@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/drummonds/gofluence/api/adf"
 	fat "github.com/drummonds/gofluence/api/fat"
 )
 
@@ -30,5 +31,9 @@ func main() {
 		fmt.Sprintf("Could'nt find title %s for ancestor %s", title, ancestorStr)
 	}
 	fmt.Printf("Body: %s", *body)
+	var adfDoc adf.DocNode
+	adfDoc.UnmarshalJSON([]byte(*body))
+	// body_as_obj := adf.UnmarshalJSON(*body)
+	fmt.Printf("Body: %v", adfDoc)
 
 }
