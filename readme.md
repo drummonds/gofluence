@@ -4,6 +4,8 @@ A OPENAPI generated client to Confluence Rest API V2
 
 The endpoints are documented here https://developer.atlassian.com/cloud/confluence/rest/v2/.
 
+In addition a Atlassian Document Format api is also contained.  It has been generated from the schema and then further hand edited.
+
 
 ## Creation
 
@@ -43,9 +45,13 @@ a full download and update cycle like I did with the api.
 
 The JSON schema was downloaded and turned into a go file with https://github.com/omissis/go-jsonschema.
 
-
+The adf.go file ahs been hand edited, eg some content should be a list of pointers rather than a list of values.  With values further edits do not mutate the set.  In addition there are some 
+additional helper functions in new_adf.go.  These should make the code using this more readable eg see example fatadfpageupdate.go
 
 ## Change Log
+
+# V0.3.0
+Introduced ADF document format with example on how to produce variable width columns.
 
 # V0.1.0
 Introduced fat client
