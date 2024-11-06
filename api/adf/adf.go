@@ -4069,7 +4069,7 @@ type TableNode struct {
 	Attrs *TableNodeAttrs `json:"attrs,omitempty" yaml:"attrs,omitempty" mapstructure:"attrs,omitempty"`
 
 	// Content corresponds to the JSON schema field "content".
-	Content []TableRowNode `json:"content" yaml:"content" mapstructure:"content"`
+	Content []*TableRowNode `json:"content" yaml:"content" mapstructure:"content"`
 
 	// Marks corresponds to the JSON schema field "marks".
 	Marks []FragmentMark `json:"marks,omitempty" yaml:"marks,omitempty" mapstructure:"marks,omitempty"`

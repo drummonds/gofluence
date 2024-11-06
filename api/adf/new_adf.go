@@ -47,7 +47,7 @@ func NewTableNode() *TableNode {
 }
 
 func (tn *TableNode) Add(node *TableRowNode) {
-	tn.Content = append(tn.Content, *node)
+	tn.Content = append(tn.Content, node)
 }
 
 func NewTableRowNode() *TableRowNode {

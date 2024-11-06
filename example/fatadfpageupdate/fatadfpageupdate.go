@@ -13,21 +13,6 @@ import (
 	"github.com/drummonds/gofluence/api/fat"
 )
 
-func getOldBody() string {
-	newBody := fmt.Sprintf(`h3. Hello new page
-h1. From the FAT client
-On live demo
-Has been updated again , at %s
-AUTO GENERATED So don't bother editing
-
-|| Key || Meaning ||
-|🖥️| host DNS entry works is available|
-|❌~DNS~| No host DNS entry, may not exist|
-|🟢| API endpoint working|
-`, time.Now().Format(time.RFC3339))
-	return newBody
-}
-
 func getBody() string {
 	adfDoc := adf.NewDocNode()
 	adfDoc.Add(adf.NewHeadingNode(3, "Hello page with Atlassian Document Format"))
@@ -40,19 +25,30 @@ func getBody() string {
 	pn.Add(adf.NewHardBreakNode())
 	pn.Add(adf.NewTextNode("Now a demo of a table:"))
 	tn := adf.NewTableNode()
+	width := 1200.0
+	layout := adf.TableNodeAttrsLayoutFullWidth
+	tn.Attrs = &adf.TableNodeAttrs{Layout: &layout, Width: &width}
 	adfDoc.Add(tn)
+
 	tr := adf.NewTableRowNode()
+	th := adf.NewTableHeader("Key")
+	th.Attrs.Colwidth = []float64{250.0}
+	tr.Add(th)
+	th = adf.NewTableHeader("Meaning")
+	th.Attrs.Colwidth = []float64{950.0}
+	tr.Add(th)
 	tn.Add(tr)
-	tr.Add(adf.NewTableHeader("Key"))
-	tr.Add(adf.NewTableHeader("Meaning"))
+
+	// If you don't set te column width on the next rows it follows the header row
 	tr = adf.NewTableRowNode()
-	tn.Add(tr)
 	tr.Add(adf.NewTableCell("🖥️"))
 	tr.Add(adf.NewTableCell("host DNS entry works is available"))
-	tr = adf.NewTableRowNode()
 	tn.Add(tr)
+
+	tr = adf.NewTableRowNode()
 	tr.Add(adf.NewTableCell("❌~DNS~"))
 	tr.Add(adf.NewTableCell("No host DNS entry, may not exist"))
+	tn.Add(tr)
 	b, err := json.Marshal(adfDoc)
 	if err != nil {
 		fmt.Println(err)
