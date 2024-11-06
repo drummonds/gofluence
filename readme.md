@@ -50,7 +50,7 @@ additional helper functions in new_adf.go.  These should make the code using thi
 
 ## Change Log
 
-# V0.3.1
+# V0.3.2
 Introduced ADF document format with example on how to produce variable width columns.
 
 # V0.1.0
