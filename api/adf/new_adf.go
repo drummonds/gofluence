@@ -38,7 +38,7 @@ func NewHeadingNode(level int, text string) *HeadingNode {
 
 func NewCodeBlockNode(language, text string) *CodeBlockNode {
 	node := CodeBlockNode{Type: "codeBlock"}
-	node.Attrs.Language = &language
+	node.Attrs = &CodeBlockNodeAttrs{Language: &language}
 	textNode := TextNode{}
 	textNode.Text = text
 	textNode.Type = "text"
