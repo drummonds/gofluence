@@ -58,6 +58,15 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	// Remove for other reasons
+	err = jsonObj.DeleteP("components.requestBodies.WhiteboardCreateRequest")
+	if err != nil {
+		panic(err)
+	}
+	err = jsonObj.DeleteP("paths./whiteboards")
+	if err != nil {
+		panic(err)
+	}
 	// Remove deprecated properties
 	err = jsonObj.DeleteP("components.schemas.InlineCommentModel.properties.properties.properties.inline-marker-ref")
 	if err != nil {

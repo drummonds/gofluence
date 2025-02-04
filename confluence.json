@@ -224,7 +224,7 @@
                   "type": "string"
                 },
                 "status": {
-                  "description": "The status of the custom content.",
+                  "description": "The status of the custom content. Defaults to `current` when status not provided.",
                   "type": "string"
                 },
                 "title": {
@@ -507,6 +507,28 @@
         },
         "required": true
       },
+      "SetSpaceRoleAssignmentRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "principal": {
+                  "$ref": "#/components/schemas/Principal"
+                },
+                "roleId": {
+                  "description": "The role to which the principal is assigned.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "principal"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      },
       "SmartLinkCreateRequest": {
         "content": {
           "application/json": {
@@ -531,6 +553,60 @@
               },
               "required": [
                 "spaceId"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      },
+      "SpaceCreateRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "alias": {
+                  "description": "This field will be used as the new identifier for the space in confluence page URLs. If the alias property is not provided, the key property is required to be used instead. Maximum 255 alphanumeric characters in length.",
+                  "type": "string"
+                },
+                "description": {
+                  "description": "The description of the new/updated space. Note, only the 'plain' representation is currently supported.",
+                  "properties": {
+                    "representation": {
+                      "description": "The format of the description.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "description": "The space description.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "key": {
+                  "description": "The key for the new space. See [Space Keys](https://support.atlassian.com/confluence-cloud/docs/create-a-space/). If the key property is not provided, the alias property is required to be used instead.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "The name of the space to be created.",
+                  "type": "string"
+                },
+                "roleAssignments": {
+                  "description": "The role assignments for the new space. If none are provided, the Default Space Roles are applied. If roles are provided, the space is created with exactly the provided set of roles. A private space is created if only the creator is assigned to a role and it’s the Admin role. At least one Admin role assignment must be specified.",
+                  "properties": {
+                    "principal": {
+                      "$ref": "#/components/schemas/Principal"
+                    },
+                    "roleId": {
+                      "description": "The role to which the principal is assigned.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "required": [
+                "name"
               ],
               "type": "object"
             }
@@ -626,33 +702,6 @@
               },
               "required": [
                 "status"
-              ],
-              "type": "object"
-            }
-          }
-        },
-        "required": true
-      },
-      "WhiteboardCreateRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "properties": {
-                "parentId": {
-                  "description": "The parent content ID of the whiteboard.",
-                  "type": "string"
-                },
-                "spaceId": {
-                  "description": "ID of the space.",
-                  "type": "string"
-                },
-                "title": {
-                  "description": "Title of the whiteboard.",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "spaceId"
               ],
               "type": "object"
             }
@@ -3154,6 +3203,36 @@
         ],
         "type": "string"
       },
+      "Principal": {
+        "description": "The principal of the role assignment.",
+        "properties": {
+          "principalId": {
+            "description": "The principal ID.",
+            "type": "string"
+          },
+          "principalType": {
+            "$ref": "#/components/schemas/PrincipalType"
+          }
+        },
+        "type": "object"
+      },
+      "PrincipalType": {
+        "description": "The principal type.",
+        "enum": [
+          "USER",
+          "GROUP",
+          "ACCESS_CLASS"
+        ],
+        "type": "string"
+      },
+      "RoleType": {
+        "description": "The role type.",
+        "enum": [
+          "SYSTEM",
+          "CUSTOM"
+        ],
+        "type": "string"
+      },
       "SmartLinkLinks": {
         "properties": {
           "webui": {
@@ -3308,6 +3387,30 @@
         "type": "object"
       },
       "SpacePermission": {
+        "properties": {
+          "description": {
+            "description": "Describes the space permission’s usage.",
+            "type": "string"
+          },
+          "displayName": {
+            "description": "The display name for the space permission.",
+            "type": "string"
+          },
+          "id": {
+            "description": "The identifier for the space permission.",
+            "type": "string"
+          },
+          "requiredPermissionIds": {
+            "description": "The permissions required for this permission to be enabled.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "SpacePermissionAssignment": {
         "properties": {
           "id": {
             "description": "ID of the space permission.",
@@ -3465,6 +3568,45 @@
         },
         "type": "object"
       },
+      "SpaceRole": {
+        "properties": {
+          "description": {
+            "description": "The description for the space role’s usage.",
+            "type": "string"
+          },
+          "displayName": {
+            "description": "The display name for the space role.",
+            "type": "string"
+          },
+          "id": {
+            "description": "The identifier for the space role.",
+            "type": "string"
+          },
+          "spacePermissions": {
+            "description": "The space permissions the space role is comprised of.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": {
+            "$ref": "#/components/schemas/RoleType"
+          }
+        },
+        "type": "object"
+      },
+      "SpaceRoleAssignment": {
+        "properties": {
+          "principal": {
+            "$ref": "#/components/schemas/Principal"
+          },
+          "roleId": {
+            "description": "The role to which the principal is assigned.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "SpaceSingle": {
         "properties": {
           "_links": {
@@ -3545,7 +3687,7 @@
               },
               "results": {
                 "items": {
-                  "$ref": "#/components/schemas/SpacePermission"
+                  "$ref": "#/components/schemas/SpacePermissionAssignment"
                 },
                 "type": "array"
               }
@@ -6325,6 +6467,15 @@
             "description": "Includes whether this blog post has been favorited by the current user.",
             "in": "query",
             "name": "include-favorited-by-current-user-status",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Includes web resources that can be used to render blog post content on a client.",
+            "in": "query",
+            "name": "include-webresources",
             "schema": {
               "default": false,
               "type": "boolean"
@@ -16501,6 +16652,15 @@
               "default": false,
               "type": "boolean"
             }
+          },
+          {
+            "description": "Includes web resources that can be used to render page content on a client.",
+            "in": "query",
+            "name": "include-webresources",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -18778,6 +18938,324 @@
         ]
       }
     },
+    "/space-permissions": {
+      "get": {
+        "description": "Retrieves the available space permissions.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site.",
+        "operationId": "getAvailableSpacePermissions",
+        "parameters": [
+          {
+            "description": "Used for pagination, this opaque cursor will be returned in the `next` URL in the `Link` response header. Use the relative URL in the `Link` header to retrieve the `next` set of results.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of space permissions to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 25,
+              "format": "int32",
+              "maximum": 250,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_links": {
+                      "$ref": "#/components/schemas/MultiEntityLinks"
+                    },
+                    "results": {
+                      "items": {
+                        "$ref": "#/components/schemas/SpacePermission"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "title": "MultiEntityResult\u003cSpacePermission\u003e",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Returned if the requested space permissions are retrieved."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\navailable space permissions."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:space.permission:confluence"
+            ]
+          }
+        ],
+        "summary": "Get available space permissions",
+        "tags": [
+          "Space Permissions",
+          "EAP"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": true
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:space.permission:confluence"
+            ],
+            "state": "Current"
+          }
+        ],
+        "x-experimental": true
+      }
+    },
+    "/space-roles": {
+      "get": {
+        "description": "Retrieves the available space roles.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site; if requesting a certain space's roles, permission to view the space.",
+        "operationId": "getAvailableSpaceRoles",
+        "parameters": [
+          {
+            "description": "The space ID for which to filter available space roles; if empty, return all available space roles for the tenant.",
+            "in": "query",
+            "name": "space-id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The space role type to filter results by.",
+            "in": "query",
+            "name": "role-type",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The principal ID to filter results by. If specified, a principal-type must also be specified. Paired with a `principal-type` of `ACCESS_CLASS`, valid values include [`anonymous-users`, `jsm-project-admins`, `authenticated-users`, `all-licensed-users`, `all-product-admins`]",
+            "in": "query",
+            "name": "principal-id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The principal type to filter results by. If specified, a principal-id must also be specified.",
+            "in": "query",
+            "name": "principal-type",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/PrincipalType"
+            }
+          },
+          {
+            "description": "Used for pagination, this opaque cursor will be returned in the `next` URL in the `Link` response header. Use the relative URL in the `Link` header to retrieve the `next` set of results.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of space roles to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 25,
+              "format": "int32",
+              "maximum": 250,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_links": {
+                      "$ref": "#/components/schemas/MultiEntityLinks"
+                    },
+                    "results": {
+                      "items": {
+                        "$ref": "#/components/schemas/SpaceRole"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "title": "MultiEntityResult\u003cSpaceRole\u003e",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Returned if the requested space roles are retrieved."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\navailable space roles."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:space.permission:confluence"
+            ]
+          }
+        ],
+        "summary": "Get available space roles",
+        "tags": [
+          "Space Roles",
+          "EAP"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": true
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:space.permission:confluence"
+            ],
+            "state": "Current"
+          }
+        ],
+        "x-experimental": true
+      }
+    },
+    "/space-roles/{id}": {
+      "get": {
+        "description": "Retrieves the space role by ID.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site.",
+        "operationId": "getSpaceRolesById",
+        "parameters": [
+          {
+            "description": "The ID of the space role to retrieve.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SpaceRole"
+                    },
+                    {
+                      "properties": {
+                        "_links": {
+                          "properties": {
+                            "base": {
+                              "description": "Base url of the Confluence site.",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Returned if the requested space role is retrieved."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nspace role."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:space.permission:confluence"
+            ]
+          }
+        ],
+        "summary": "Get space role by ID",
+        "tags": [
+          "Space Roles",
+          "EAP"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": true
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:space.permission:confluence"
+            ],
+            "state": "Current"
+          }
+        ],
+        "x-experimental": true
+      }
+    },
     "/spaces": {
       "get": {
         "description": "Returns all spaces. The results will be sorted by id ascending. The number of results is limited by the `limit` parameter and\nadditional results (if available) will be available through the `next` URL present in the `Link` response header.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to access the Confluence site ('Can use' global permission).\nOnly spaces that the user has permission to view will be returned.",
@@ -18987,6 +19465,90 @@
             "state": "Current"
           }
         ]
+      },
+      "post": {
+        "description": "Creates a Space as specified in the payload.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to create spaces.",
+        "operationId": "createSpace",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SpaceCreateRequest"
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SpaceBulk"
+                    },
+                    {
+                      "properties": {
+                        "_links": {
+                          "properties": {
+                            "base": {
+                              "description": "Base url of the Confluence site.",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Returned if the requested space is created."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to create spaces."
+          },
+          "413": {
+            "content": {},
+            "description": "Returned if the request is too large in size (over 5 MB)."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "write:space:confluence"
+            ]
+          }
+        ],
+        "summary": "Create space",
+        "tags": [
+          "Space",
+          "EAP"
+        ],
+        "x-atlassian-connect-scope": "WRITE",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": true
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "write:space:confluence"
+            ],
+            "state": "Current"
+          }
+        ],
+        "x-experimental": true
       }
     },
     "/spaces/{id}": {
@@ -19045,6 +19607,15 @@
             "description": "Includes space permissions associated with this space in the response.\nThe number of results will be limited to 50 and sorted in the default sort order.\nA `meta` and `_links` property will be present to indicate if more results are available and a link to retrieve the rest of the results.",
             "in": "query",
             "name": "include-permissions",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Includes role assignments associated with this space in the response. This parameter is only accepted for EAP sites.\nThe number of results will be limited to 50 and sorted in the default sort order.\nA `meta` and `_links` property will be present to indicate if more results are available and a link to retrieve the rest of the results.",
+            "in": "query",
+            "name": "include-role-assignments",
             "schema": {
               "default": false,
               "type": "boolean"
@@ -20138,8 +20709,8 @@
     },
     "/spaces/{id}/permissions": {
       "get": {
-        "description": "Returns space permissions for a specific space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the space.",
-        "operationId": "getSpacePermissions",
+        "description": "Returns space permission assignments for a specific space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the space.",
+        "operationId": "getSpacePermissionsAssignments",
         "parameters": [
           {
             "description": "The ID of the space to be returned.",
@@ -20161,7 +20732,7 @@
             }
           },
           {
-            "description": "Maximum number of spaces per result to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.",
+            "description": "Maximum number of assignments to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.",
             "in": "query",
             "name": "limit",
             "schema": {
@@ -20184,17 +20755,17 @@
                     },
                     "results": {
                       "items": {
-                        "$ref": "#/components/schemas/SpacePermission"
+                        "$ref": "#/components/schemas/SpacePermissionAssignment"
                       },
                       "type": "array"
                     }
                   },
-                  "title": "MultiEntityResult\u003cSpacePermission\u003e",
+                  "title": "MultiEntityResult\u003cSpacePermissionAssignment\u003e",
                   "type": "object"
                 }
               }
             },
-            "description": "Returned if the requested space permissions are returned."
+            "description": "Returned if the requested assignments are returned."
           },
           "400": {
             "content": {},
@@ -20206,7 +20777,7 @@
           },
           "404": {
             "content": {},
-            "description": "Returned if the calling user does not have permission to view the\nrequested space permissions or the space was not found."
+            "description": "Returned if the calling user does not have permission to view the\nrequested space permission assignments or the space was not found."
           }
         },
         "security": [
@@ -20219,7 +20790,7 @@
             ]
           }
         ],
-        "summary": "Get space permissions",
+        "summary": "Get space permissions assignments",
         "tags": [
           "Space Permissions"
         ],
@@ -20238,6 +20809,236 @@
             "state": "Current"
           }
         ]
+      }
+    },
+    "/spaces/{id}/role-assignments": {
+      "get": {
+        "description": "Retrieves the space role assignments.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the space.",
+        "operationId": "getSpaceRoleAssignments",
+        "parameters": [
+          {
+            "description": "The ID of the space for which to retrieve assignments.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Filters the returned role assignments to the provided role ID.",
+            "in": "query",
+            "name": "role-id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filters the returned role assignments to the provided role type.",
+            "in": "query",
+            "name": "role-type",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filters the returned role assignments to the provided principal id. If specified, a principal-type must also be specified. Paired with a `principal-type` of `ACCESS_CLASS`, valid values include [`anonymous-users`, `jsm-project-admins`, `authenticated-users`, `all-licensed-users`, `all-product-admins`]",
+            "in": "query",
+            "name": "principal-id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filters the returned role assignments to the provided principal type. If specified, a principal-id must also be specified.",
+            "in": "query",
+            "name": "principal-type",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/PrincipalType"
+            }
+          },
+          {
+            "description": "Used for pagination, this opaque cursor will be returned in the `next` URL in the `Link` response header. Use the relative URL in the `Link` header to retrieve the `next` set of results.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of space roles to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 25,
+              "format": "int32",
+              "maximum": 250,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_links": {
+                      "$ref": "#/components/schemas/MultiEntityLinks"
+                    },
+                    "results": {
+                      "items": {
+                        "$ref": "#/components/schemas/SpaceRoleAssignment"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "title": "MultiEntityResult\u003cSpaceRoleAssignment\u003e",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Returned if the requested space role assignments are retrieved."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to view the\nspace or the space was not found."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "read:space.permission:confluence"
+            ]
+          }
+        ],
+        "summary": "Get space role assignments",
+        "tags": [
+          "Space Roles",
+          "EAP"
+        ],
+        "x-atlassian-connect-scope": "READ",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": true
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "read:space.permission:confluence"
+            ],
+            "state": "Current"
+          }
+        ],
+        "x-experimental": true
+      },
+      "post": {
+        "description": "Sets space role assignments as specified in the payload.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to manage roles in the space.",
+        "operationId": "setSpaceRoleAssignments",
+        "parameters": [
+          {
+            "description": "The ID of the space for which to retrieve assignments.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SetSpaceRoleAssignmentRequest"
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_links": {
+                      "$ref": "#/components/schemas/MultiEntityLinks"
+                    },
+                    "results": {
+                      "items": {
+                        "$ref": "#/components/schemas/SpaceRoleAssignment"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "title": "MultiEntityResult\u003cSpaceRoleAssignment\u003e",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Returned if the requested update to space role assignments succeeds in its entirety."
+          },
+          "400": {
+            "content": {},
+            "description": "Returned if an invalid request is provided."
+          },
+          "401": {
+            "content": {},
+            "description": "Returned if the authentication credentials are incorrect or missing\nfrom the request."
+          },
+          "404": {
+            "content": {},
+            "description": "Returned if the calling user does not have permission to set roles in the space, or the space was not found."
+          },
+          "413": {
+            "content": {},
+            "description": "Returned if the request is too large in size (over 5 MB)."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "oAuthDefinitions": [
+              "write:space.permission:confluence"
+            ]
+          }
+        ],
+        "summary": "Set space role assignments",
+        "tags": [
+          "Space Roles",
+          "EAP"
+        ],
+        "x-atlassian-connect-scope": "SPACE_ADMIN",
+        "x-atlassian-data-security-policy": [
+          {
+            "app-access-rule-exempt": true
+          }
+        ],
+        "x-atlassian-oauth2-scopes": [
+          {
+            "scheme": "oAuthDefinitions",
+            "scopes": [
+              "write:space.permission:confluence"
+            ],
+            "state": "Current"
+          }
+        ],
+        "x-experimental": true
       }
     },
     "/spaces/{space-id}/properties": {
@@ -21350,100 +22151,6 @@
         ]
       }
     },
-    "/whiteboards": {
-      "post": {
-        "description": "Creates a whiteboard in the space.\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the corresponding space. Permission to create a whiteboard in the space.",
-        "operationId": "createWhiteboard",
-        "parameters": [
-          {
-            "description": "The whiteboard will be private. Only the user who creates this whiteboard will have permission to view and edit one.",
-            "in": "query",
-            "name": "private",
-            "schema": {
-              "default": false,
-              "type": "boolean"
-            }
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/WhiteboardCreateRequest"
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/WhiteboardSingle"
-                    },
-                    {
-                      "properties": {
-                        "_links": {
-                          "properties": {
-                            "base": {
-                              "description": "Base url of the Confluence site.",
-                              "type": "string"
-                            }
-                          },
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Returned if the whiteboard was successfully created."
-          },
-          "400": {
-            "content": {},
-            "description": "Returned if an invalid request is provided."
-          },
-          "401": {
-            "content": {},
-            "description": "Returned if the authentication credentials are incorrect or missing from the request."
-          },
-          "404": {
-            "description": "Returned if:\n- The space does not exist\n- The user does not have permissions to view the space\n- The user does not have the needed permissions to create a whiteboard in the provided space"
-          },
-          "413": {
-            "content": {},
-            "description": "Returned if the request is too large in size (over 5 MB)."
-          }
-        },
-        "security": [
-          {
-            "basicAuth": []
-          },
-          {
-            "oAuthDefinitions": [
-              "write:whiteboard:confluence"
-            ]
-          }
-        ],
-        "summary": "Create whiteboard",
-        "tags": [
-          "Whiteboard"
-        ],
-        "x-atlassian-connect-scope": "WRITE",
-        "x-atlassian-data-security-policy": [
-          {
-            "app-access-rule-exempt": false
-          }
-        ],
-        "x-atlassian-oauth2-scopes": [
-          {
-            "scheme": "oAuthDefinitions",
-            "scopes": [
-              "write:whiteboard:confluence"
-            ],
-            "state": "Current"
-          }
-        ]
-      }
-    },
     "/whiteboards/{id}": {
       "delete": {
         "description": "Delete a whiteboard by id.\n\nDeleting a whiteboard moves the whiteboard to the trash, where it can be restored later\n\n**[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:\nPermission to view the whiteboard and its corresponding space.\nPermission to delete whiteboards in the space.",
@@ -22510,6 +23217,10 @@
     {
       "description": "",
       "name": "Space Properties"
+    },
+    {
+      "description": "",
+      "name": "Space Roles"
     },
     {
       "description": "",

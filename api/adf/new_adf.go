@@ -36,6 +36,11 @@ func NewHeadingNode(level int, text string) *HeadingNode {
 	return &node
 }
 
+func NewCodeBlockNode() *CodeBlockNode {
+	node := CodeBlockNode{Type: "codeBlock"}
+	return &node
+}
+
 func NewHardBreakNode() *HardBreakNode {
 	node := HardBreakNode{Type: "hardBreak"}
 	return &node

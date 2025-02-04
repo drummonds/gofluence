@@ -28,7 +28,7 @@ func main() {
 	result, err := fc.GetPageBody(ctx, ancestorStr, title)
 	body := result.Body.AtlasDocFormat.Value
 	if err != nil {
-		fmt.Sprintf("Could'nt find title %s for ancestor %s", title, ancestorStr)
+		fmt.Printf("Could'nt find title %s for ancestor %s", title, ancestorStr)
 	}
 	fmt.Printf("Body: %s", *body)
 	var adfDoc adf.DocNode

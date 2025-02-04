@@ -272,51 +272,64 @@ const (
 	PrimaryBodyRepresentationSingleView                PrimaryBodyRepresentationSingle = "view"
 )
 
+// Defines values for PrincipalType.
+const (
+	ACCESSCLASS PrincipalType = "ACCESS_CLASS"
+	GROUP       PrincipalType = "GROUP"
+	USER        PrincipalType = "USER"
+)
+
+// Defines values for RoleType.
+const (
+	CUSTOM RoleType = "CUSTOM"
+	SYSTEM RoleType = "SYSTEM"
+)
+
 // Defines values for SpaceDescriptionBodyRepresentation.
 const (
 	Plain SpaceDescriptionBodyRepresentation = "plain"
 	View  SpaceDescriptionBodyRepresentation = "view"
 )
 
-// Defines values for SpacePermissionOperationKey.
+// Defines values for SpacePermissionAssignmentOperationKey.
 const (
-	Administer      SpacePermissionOperationKey = "administer"
-	Archive         SpacePermissionOperationKey = "archive"
-	Copy            SpacePermissionOperationKey = "copy"
-	Create          SpacePermissionOperationKey = "create"
-	CreateSpace     SpacePermissionOperationKey = "create_space"
-	Delete          SpacePermissionOperationKey = "delete"
-	Export          SpacePermissionOperationKey = "export"
-	Move            SpacePermissionOperationKey = "move"
-	Purge           SpacePermissionOperationKey = "purge"
-	PurgeVersion    SpacePermissionOperationKey = "purge_version"
-	Read            SpacePermissionOperationKey = "read"
-	Restore         SpacePermissionOperationKey = "restore"
-	RestrictContent SpacePermissionOperationKey = "restrict_content"
-	Update          SpacePermissionOperationKey = "update"
-	Use             SpacePermissionOperationKey = "use"
+	Administer      SpacePermissionAssignmentOperationKey = "administer"
+	Archive         SpacePermissionAssignmentOperationKey = "archive"
+	Copy            SpacePermissionAssignmentOperationKey = "copy"
+	Create          SpacePermissionAssignmentOperationKey = "create"
+	CreateSpace     SpacePermissionAssignmentOperationKey = "create_space"
+	Delete          SpacePermissionAssignmentOperationKey = "delete"
+	Export          SpacePermissionAssignmentOperationKey = "export"
+	Move            SpacePermissionAssignmentOperationKey = "move"
+	Purge           SpacePermissionAssignmentOperationKey = "purge"
+	PurgeVersion    SpacePermissionAssignmentOperationKey = "purge_version"
+	Read            SpacePermissionAssignmentOperationKey = "read"
+	Restore         SpacePermissionAssignmentOperationKey = "restore"
+	RestrictContent SpacePermissionAssignmentOperationKey = "restrict_content"
+	Update          SpacePermissionAssignmentOperationKey = "update"
+	Use             SpacePermissionAssignmentOperationKey = "use"
 )
 
-// Defines values for SpacePermissionOperationTargetType.
+// Defines values for SpacePermissionAssignmentOperationTargetType.
 const (
-	SpacePermissionOperationTargetTypeApplication SpacePermissionOperationTargetType = "application"
-	SpacePermissionOperationTargetTypeAttachment  SpacePermissionOperationTargetType = "attachment"
-	SpacePermissionOperationTargetTypeBlogpost    SpacePermissionOperationTargetType = "blogpost"
-	SpacePermissionOperationTargetTypeComment     SpacePermissionOperationTargetType = "comment"
-	SpacePermissionOperationTargetTypeDatabase    SpacePermissionOperationTargetType = "database"
-	SpacePermissionOperationTargetTypeEmbed       SpacePermissionOperationTargetType = "embed"
-	SpacePermissionOperationTargetTypeFolder      SpacePermissionOperationTargetType = "folder"
-	SpacePermissionOperationTargetTypePage        SpacePermissionOperationTargetType = "page"
-	SpacePermissionOperationTargetTypeSpace       SpacePermissionOperationTargetType = "space"
-	SpacePermissionOperationTargetTypeUserProfile SpacePermissionOperationTargetType = "userProfile"
-	SpacePermissionOperationTargetTypeWhiteboard  SpacePermissionOperationTargetType = "whiteboard"
+	SpacePermissionAssignmentOperationTargetTypeApplication SpacePermissionAssignmentOperationTargetType = "application"
+	SpacePermissionAssignmentOperationTargetTypeAttachment  SpacePermissionAssignmentOperationTargetType = "attachment"
+	SpacePermissionAssignmentOperationTargetTypeBlogpost    SpacePermissionAssignmentOperationTargetType = "blogpost"
+	SpacePermissionAssignmentOperationTargetTypeComment     SpacePermissionAssignmentOperationTargetType = "comment"
+	SpacePermissionAssignmentOperationTargetTypeDatabase    SpacePermissionAssignmentOperationTargetType = "database"
+	SpacePermissionAssignmentOperationTargetTypeEmbed       SpacePermissionAssignmentOperationTargetType = "embed"
+	SpacePermissionAssignmentOperationTargetTypeFolder      SpacePermissionAssignmentOperationTargetType = "folder"
+	SpacePermissionAssignmentOperationTargetTypePage        SpacePermissionAssignmentOperationTargetType = "page"
+	SpacePermissionAssignmentOperationTargetTypeSpace       SpacePermissionAssignmentOperationTargetType = "space"
+	SpacePermissionAssignmentOperationTargetTypeUserProfile SpacePermissionAssignmentOperationTargetType = "userProfile"
+	SpacePermissionAssignmentOperationTargetTypeWhiteboard  SpacePermissionAssignmentOperationTargetType = "whiteboard"
 )
 
-// Defines values for SpacePermissionPrincipalType.
+// Defines values for SpacePermissionAssignmentPrincipalType.
 const (
-	SpacePermissionPrincipalTypeGroup SpacePermissionPrincipalType = "group"
-	SpacePermissionPrincipalTypeRole  SpacePermissionPrincipalType = "role"
-	SpacePermissionPrincipalTypeUser  SpacePermissionPrincipalType = "user"
+	SpacePermissionAssignmentPrincipalTypeGroup SpacePermissionAssignmentPrincipalType = "group"
+	SpacePermissionAssignmentPrincipalTypeRole  SpacePermissionAssignmentPrincipalType = "role"
+	SpacePermissionAssignmentPrincipalTypeUser  SpacePermissionAssignmentPrincipalType = "user"
 )
 
 // Defines values for SpaceSortOrder.
@@ -2003,6 +2016,21 @@ type PrimaryBodyRepresentation string
 // PrimaryBodyRepresentationSingle The primary formats a body can be represented as. A subset of BodyRepresentation. These formats are the only allowed formats in certain use cases.
 type PrimaryBodyRepresentationSingle string
 
+// Principal The principal of the role assignment.
+type Principal struct {
+	// PrincipalId The principal ID.
+	PrincipalId *string `json:"principalId,omitempty"`
+
+	// PrincipalType The principal type.
+	PrincipalType *PrincipalType `json:"principalType,omitempty"`
+}
+
+// PrincipalType The principal type.
+type PrincipalType string
+
+// RoleType The role type.
+type RoleType string
+
 // SmartLinkLinks defines model for SmartLinkLinks.
 type SmartLinkLinks struct {
 	// Webui Web UI link of the content.
@@ -2112,34 +2140,49 @@ type SpaceLinks struct {
 
 // SpacePermission defines model for SpacePermission.
 type SpacePermission struct {
+	// Description Describes the space permission’s usage.
+	Description *string `json:"description,omitempty"`
+
+	// DisplayName The display name for the space permission.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Id The identifier for the space permission.
+	Id *string `json:"id,omitempty"`
+
+	// RequiredPermissionIds The permissions required for this permission to be enabled.
+	RequiredPermissionIds *[]string `json:"requiredPermissionIds,omitempty"`
+}
+
+// SpacePermissionAssignment defines model for SpacePermissionAssignment.
+type SpacePermissionAssignment struct {
 	// Id ID of the space permission.
 	Id *string `json:"id,omitempty"`
 
 	// Operation The operation the space permission corresponds to.
 	Operation *struct {
 		// Key The type of operation.
-		Key *SpacePermissionOperationKey `json:"key,omitempty"`
+		Key *SpacePermissionAssignmentOperationKey `json:"key,omitempty"`
 
 		// TargetType The type of entity the operation type targets.
-		TargetType *SpacePermissionOperationTargetType `json:"targetType,omitempty"`
+		TargetType *SpacePermissionAssignmentOperationTargetType `json:"targetType,omitempty"`
 	} `json:"operation,omitempty"`
 
 	// Principal The entity the space permissions corresponds to.
 	Principal *struct {
 		// Id ID of the entity.
-		Id   *string                       `json:"id,omitempty"`
-		Type *SpacePermissionPrincipalType `json:"type,omitempty"`
+		Id   *string                                 `json:"id,omitempty"`
+		Type *SpacePermissionAssignmentPrincipalType `json:"type,omitempty"`
 	} `json:"principal,omitempty"`
 }
 
-// SpacePermissionOperationKey The type of operation.
-type SpacePermissionOperationKey string
+// SpacePermissionAssignmentOperationKey The type of operation.
+type SpacePermissionAssignmentOperationKey string
 
-// SpacePermissionOperationTargetType The type of entity the operation type targets.
-type SpacePermissionOperationTargetType string
+// SpacePermissionAssignmentOperationTargetType The type of entity the operation type targets.
+type SpacePermissionAssignmentOperationTargetType string
 
-// SpacePermissionPrincipalType defines model for SpacePermission.Principal.Type.
-type SpacePermissionPrincipalType string
+// SpacePermissionAssignmentPrincipalType defines model for SpacePermissionAssignment.Principal.Type.
+type SpacePermissionAssignmentPrincipalType string
 
 // SpaceProperty defines model for SpaceProperty.
 type SpaceProperty struct {
@@ -2199,6 +2242,33 @@ type SpacePropertyUpdateRequest struct {
 	} `json:"version,omitempty"`
 }
 
+// SpaceRole defines model for SpaceRole.
+type SpaceRole struct {
+	// Description The description for the space role’s usage.
+	Description *string `json:"description,omitempty"`
+
+	// DisplayName The display name for the space role.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Id The identifier for the space role.
+	Id *string `json:"id,omitempty"`
+
+	// SpacePermissions The space permissions the space role is comprised of.
+	SpacePermissions *[]string `json:"spacePermissions,omitempty"`
+
+	// Type The role type.
+	Type *RoleType `json:"type,omitempty"`
+}
+
+// SpaceRoleAssignment defines model for SpaceRoleAssignment.
+type SpaceRoleAssignment struct {
+	// Principal The principal of the role assignment.
+	Principal *Principal `json:"principal,omitempty"`
+
+	// RoleId The role to which the principal is assigned.
+	RoleId *string `json:"roleId,omitempty"`
+}
+
 // SpaceSingle defines model for SpaceSingle.
 type SpaceSingle struct {
 	Links *SpaceLinks `json:"_links,omitempty"`
@@ -2237,9 +2307,9 @@ type SpaceSingle struct {
 		Results *[]Operation        `json:"results,omitempty"`
 	} `json:"operations,omitempty"`
 	Permissions *struct {
-		Links   *OptionalFieldLinks `json:"_links,omitempty"`
-		Meta    *OptionalFieldMeta  `json:"meta,omitempty"`
-		Results *[]SpacePermission  `json:"results,omitempty"`
+		Links   *OptionalFieldLinks          `json:"_links,omitempty"`
+		Meta    *OptionalFieldMeta           `json:"meta,omitempty"`
+		Results *[]SpacePermissionAssignment `json:"results,omitempty"`
 	} `json:"permissions,omitempty"`
 	Properties *struct {
 		Links   *OptionalFieldLinks `json:"_links,omitempty"`
@@ -2552,7 +2622,7 @@ type CustomContentCreateRequest struct {
 	// SpaceId ID of the containing space.
 	SpaceId *string `json:"spaceId,omitempty"`
 
-	// Status The status of the custom content.
+	// Status The status of the custom content. Defaults to `current` when status not provided.
 	Status *string `json:"status,omitempty"`
 
 	// Title Title of the custom content.
@@ -2697,6 +2767,15 @@ type PageUpdateRequest struct {
 	} `json:"version"`
 }
 
+// SetSpaceRoleAssignmentRequest defines model for SetSpaceRoleAssignmentRequest.
+type SetSpaceRoleAssignmentRequest struct {
+	// Principal The principal of the role assignment.
+	Principal Principal `json:"principal"`
+
+	// RoleId The role to which the principal is assigned.
+	RoleId *string `json:"roleId,omitempty"`
+}
+
 // SmartLinkCreateRequest defines model for SmartLinkCreateRequest.
 type SmartLinkCreateRequest struct {
 	// EmbedUrl The URL that the Smart Link in the content tree should be populated with.
@@ -2710,6 +2789,36 @@ type SmartLinkCreateRequest struct {
 
 	// Title Title of the Smart Link in the content tree.
 	Title *string `json:"title,omitempty"`
+}
+
+// SpaceCreateRequest defines model for SpaceCreateRequest.
+type SpaceCreateRequest struct {
+	// Alias This field will be used as the new identifier for the space in confluence page URLs. If the alias property is not provided, the key property is required to be used instead. Maximum 255 alphanumeric characters in length.
+	Alias *string `json:"alias,omitempty"`
+
+	// Description The description of the new/updated space. Note, only the 'plain' representation is currently supported.
+	Description *struct {
+		// Representation The format of the description.
+		Representation *string `json:"representation,omitempty"`
+
+		// Value The space description.
+		Value *string `json:"value,omitempty"`
+	} `json:"description,omitempty"`
+
+	// Key The key for the new space. See [Space Keys](https://support.atlassian.com/confluence-cloud/docs/create-a-space/). If the key property is not provided, the alias property is required to be used instead.
+	Key *string `json:"key,omitempty"`
+
+	// Name The name of the space to be created.
+	Name string `json:"name"`
+
+	// RoleAssignments The role assignments for the new space. If none are provided, the Default Space Roles are applied. If roles are provided, the space is created with exactly the provided set of roles. A private space is created if only the creator is assigned to a role and it’s the Admin role. At least one Admin role assignment must be specified.
+	RoleAssignments *struct {
+		// Principal The principal of the role assignment.
+		Principal *Principal `json:"principal,omitempty"`
+
+		// RoleId The role to which the principal is assigned.
+		RoleId *string `json:"roleId,omitempty"`
+	} `json:"roleAssignments,omitempty"`
 }
 
 // SpaceDefaultClassificationLevelUpdateRequest defines model for SpaceDefaultClassificationLevelUpdateRequest.
@@ -2761,18 +2870,6 @@ type TaskUpdateRequest struct {
 
 	// UpdatedAt Date and time when the task was updated. In format "YYYY-MM-DDTHH:mm:ss.sssZ".
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
-}
-
-// WhiteboardCreateRequest defines model for WhiteboardCreateRequest.
-type WhiteboardCreateRequest struct {
-	// ParentId The parent content ID of the whiteboard.
-	ParentId *string `json:"parentId,omitempty"`
-
-	// SpaceId ID of the space.
-	SpaceId string `json:"spaceId"`
-
-	// Title Title of the whiteboard.
-	Title *string `json:"title,omitempty"`
 }
 
 // GetAttachmentsParams defines parameters for GetAttachments.
@@ -3017,6 +3114,9 @@ type GetBlogPostByIdParams struct {
 
 	// IncludeFavoritedByCurrentUserStatus Includes whether this blog post has been favorited by the current user.
 	IncludeFavoritedByCurrentUserStatus *bool `form:"include-favorited-by-current-user-status,omitempty" json:"include-favorited-by-current-user-status,omitempty"`
+
+	// IncludeWebresources Includes web resources that can be used to render blog post content on a client.
+	IncludeWebresources *bool `form:"include-webresources,omitempty" json:"include-webresources,omitempty"`
 }
 
 // GetBlogPostByIdParamsStatus defines parameters for GetBlogPostById.
@@ -3274,7 +3374,7 @@ type CreateCustomContentJSONBody struct {
 	// SpaceId ID of the containing space.
 	SpaceId *string `json:"spaceId,omitempty"`
 
-	// Status The status of the custom content.
+	// Status The status of the custom content. Defaults to `current` when status not provided.
 	Status *string `json:"status,omitempty"`
 
 	// Title Title of the custom content.
@@ -3974,6 +4074,9 @@ type GetPageByIdParams struct {
 
 	// IncludeFavoritedByCurrentUserStatus Includes whether this page has been favorited by the current user.
 	IncludeFavoritedByCurrentUserStatus *bool `form:"include-favorited-by-current-user-status,omitempty" json:"include-favorited-by-current-user-status,omitempty"`
+
+	// IncludeWebresources Includes web resources that can be used to render page content on a client.
+	IncludeWebresources *bool `form:"include-webresources,omitempty" json:"include-webresources,omitempty"`
 }
 
 // GetPageByIdParamsStatus defines parameters for GetPageById.
@@ -4212,6 +4315,36 @@ type GetPageContentPropertiesParams struct {
 	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
 }
 
+// GetAvailableSpacePermissionsParams defines parameters for GetAvailableSpacePermissions.
+type GetAvailableSpacePermissionsParams struct {
+	// Cursor Used for pagination, this opaque cursor will be returned in the `next` URL in the `Link` response header. Use the relative URL in the `Link` header to retrieve the `next` set of results.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Maximum number of space permissions to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// GetAvailableSpaceRolesParams defines parameters for GetAvailableSpaceRoles.
+type GetAvailableSpaceRolesParams struct {
+	// SpaceId The space ID for which to filter available space roles; if empty, return all available space roles for the tenant.
+	SpaceId *string `form:"space-id,omitempty" json:"space-id,omitempty"`
+
+	// RoleType The space role type to filter results by.
+	RoleType *string `form:"role-type,omitempty" json:"role-type,omitempty"`
+
+	// PrincipalId The principal ID to filter results by. If specified, a principal-type must also be specified. Paired with a `principal-type` of `ACCESS_CLASS`, valid values include [`anonymous-users`, `jsm-project-admins`, `authenticated-users`, `all-licensed-users`, `all-product-admins`]
+	PrincipalId *string `form:"principal-id,omitempty" json:"principal-id,omitempty"`
+
+	// PrincipalType The principal type to filter results by. If specified, a principal-id must also be specified.
+	PrincipalType *PrincipalType `form:"principal-type,omitempty" json:"principal-type,omitempty"`
+
+	// Cursor Used for pagination, this opaque cursor will be returned in the `next` URL in the `Link` response header. Use the relative URL in the `Link` header to retrieve the `next` set of results.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Maximum number of space roles to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
 // GetSpacesParams defines parameters for GetSpaces.
 type GetSpacesParams struct {
 	// Ids Filter the results to spaces based on their IDs. Multiple IDs can be specified as a comma-separated list.
@@ -4257,6 +4390,36 @@ type GetSpacesParamsType string
 // GetSpacesParamsStatus defines parameters for GetSpaces.
 type GetSpacesParamsStatus string
 
+// CreateSpaceJSONBody defines parameters for CreateSpace.
+type CreateSpaceJSONBody struct {
+	// Alias This field will be used as the new identifier for the space in confluence page URLs. If the alias property is not provided, the key property is required to be used instead. Maximum 255 alphanumeric characters in length.
+	Alias *string `json:"alias,omitempty"`
+
+	// Description The description of the new/updated space. Note, only the 'plain' representation is currently supported.
+	Description *struct {
+		// Representation The format of the description.
+		Representation *string `json:"representation,omitempty"`
+
+		// Value The space description.
+		Value *string `json:"value,omitempty"`
+	} `json:"description,omitempty"`
+
+	// Key The key for the new space. See [Space Keys](https://support.atlassian.com/confluence-cloud/docs/create-a-space/). If the key property is not provided, the alias property is required to be used instead.
+	Key *string `json:"key,omitempty"`
+
+	// Name The name of the space to be created.
+	Name string `json:"name"`
+
+	// RoleAssignments The role assignments for the new space. If none are provided, the Default Space Roles are applied. If roles are provided, the space is created with exactly the provided set of roles. A private space is created if only the creator is assigned to a role and it’s the Admin role. At least one Admin role assignment must be specified.
+	RoleAssignments *struct {
+		// Principal The principal of the role assignment.
+		Principal *Principal `json:"principal,omitempty"`
+
+		// RoleId The role to which the principal is assigned.
+		RoleId *string `json:"roleId,omitempty"`
+	} `json:"roleAssignments,omitempty"`
+}
+
 // GetSpaceByIdParams defines parameters for GetSpaceById.
 type GetSpaceByIdParams struct {
 	// DescriptionFormat The content format type to be returned in the `description` field of the response. If available, the representation will be available under a response field of the same name under the `description` field.
@@ -4279,6 +4442,11 @@ type GetSpaceByIdParams struct {
 	// The number of results will be limited to 50 and sorted in the default sort order.
 	// A `meta` and `_links` property will be present to indicate if more results are available and a link to retrieve the rest of the results.
 	IncludePermissions *bool `form:"include-permissions,omitempty" json:"include-permissions,omitempty"`
+
+	// IncludeRoleAssignments Includes role assignments associated with this space in the response. This parameter is only accepted for EAP sites.
+	// The number of results will be limited to 50 and sorted in the default sort order.
+	// A `meta` and `_links` property will be present to indicate if more results are available and a link to retrieve the rest of the results.
+	IncludeRoleAssignments *bool `form:"include-role-assignments,omitempty" json:"include-role-assignments,omitempty"`
 
 	// IncludeLabels Includes labels associated with this space in the response.
 	// The number of results will be limited to 50 and sorted in the default sort order.
@@ -4402,13 +4570,43 @@ type GetPagesInSpaceParamsDepth string
 // GetPagesInSpaceParamsStatus defines parameters for GetPagesInSpace.
 type GetPagesInSpaceParamsStatus string
 
-// GetSpacePermissionsParams defines parameters for GetSpacePermissions.
-type GetSpacePermissionsParams struct {
+// GetSpacePermissionsAssignmentsParams defines parameters for GetSpacePermissionsAssignments.
+type GetSpacePermissionsAssignmentsParams struct {
 	// Cursor Used for pagination, this opaque cursor will be returned in the `next` URL in the `Link` response header. Use the relative URL in the `Link` header to retrieve the `next` set of results.
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 
-	// Limit Maximum number of spaces per result to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.
+	// Limit Maximum number of assignments to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.
 	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// GetSpaceRoleAssignmentsParams defines parameters for GetSpaceRoleAssignments.
+type GetSpaceRoleAssignmentsParams struct {
+	// RoleId Filters the returned role assignments to the provided role ID.
+	RoleId *string `form:"role-id,omitempty" json:"role-id,omitempty"`
+
+	// RoleType Filters the returned role assignments to the provided role type.
+	RoleType *string `form:"role-type,omitempty" json:"role-type,omitempty"`
+
+	// PrincipalId Filters the returned role assignments to the provided principal id. If specified, a principal-type must also be specified. Paired with a `principal-type` of `ACCESS_CLASS`, valid values include [`anonymous-users`, `jsm-project-admins`, `authenticated-users`, `all-licensed-users`, `all-product-admins`]
+	PrincipalId *string `form:"principal-id,omitempty" json:"principal-id,omitempty"`
+
+	// PrincipalType Filters the returned role assignments to the provided principal type. If specified, a principal-id must also be specified.
+	PrincipalType *PrincipalType `form:"principal-type,omitempty" json:"principal-type,omitempty"`
+
+	// Cursor Used for pagination, this opaque cursor will be returned in the `next` URL in the `Link` response header. Use the relative URL in the `Link` header to retrieve the `next` set of results.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Maximum number of space roles to return. If more results exist, use the `Link` response header to retrieve a relative URL that will return the next set of results.
+	Limit *int32 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// SetSpaceRoleAssignmentsJSONBody defines parameters for SetSpaceRoleAssignments.
+type SetSpaceRoleAssignmentsJSONBody struct {
+	// Principal The principal of the role assignment.
+	Principal Principal `json:"principal"`
+
+	// RoleId The role to which the principal is assigned.
+	RoleId *string `json:"roleId,omitempty"`
 }
 
 // GetSpacePropertiesParams defines parameters for GetSpaceProperties.
@@ -4555,24 +4753,6 @@ type CreateBulkUserLookupJSONBody struct {
 	AccountIds []string `json:"accountIds"`
 }
 
-// CreateWhiteboardJSONBody defines parameters for CreateWhiteboard.
-type CreateWhiteboardJSONBody struct {
-	// ParentId The parent content ID of the whiteboard.
-	ParentId *string `json:"parentId,omitempty"`
-
-	// SpaceId ID of the space.
-	SpaceId string `json:"spaceId"`
-
-	// Title Title of the whiteboard.
-	Title *string `json:"title,omitempty"`
-}
-
-// CreateWhiteboardParams defines parameters for CreateWhiteboard.
-type CreateWhiteboardParams struct {
-	// Private The whiteboard will be private. Only the user who creates this whiteboard will have permission to view and edit one.
-	Private *bool `form:"private,omitempty" json:"private,omitempty"`
-}
-
 // GetWhiteboardAncestorsParams defines parameters for GetWhiteboardAncestors.
 type GetWhiteboardAncestorsParams struct {
 	// Limit Maximum number of items per result to return. If more results exist, call the endpoint with the highest ancestor's ID to fetch the next set of results.
@@ -4717,8 +4897,14 @@ type CreatePagePropertyJSONRequestBody = ContentPropertyCreateRequest
 // UpdatePagePropertyByIdJSONRequestBody defines body for UpdatePagePropertyById for application/json ContentType.
 type UpdatePagePropertyByIdJSONRequestBody = ContentPropertyUpdateRequest
 
+// CreateSpaceJSONRequestBody defines body for CreateSpace for application/json ContentType.
+type CreateSpaceJSONRequestBody CreateSpaceJSONBody
+
 // PutSpaceDefaultClassificationLevelJSONRequestBody defines body for PutSpaceDefaultClassificationLevel for application/json ContentType.
 type PutSpaceDefaultClassificationLevelJSONRequestBody PutSpaceDefaultClassificationLevelJSONBody
+
+// SetSpaceRoleAssignmentsJSONRequestBody defines body for SetSpaceRoleAssignments for application/json ContentType.
+type SetSpaceRoleAssignmentsJSONRequestBody SetSpaceRoleAssignmentsJSONBody
 
 // CreateSpacePropertyJSONRequestBody defines body for CreateSpaceProperty for application/json ContentType.
 type CreateSpacePropertyJSONRequestBody = SpacePropertyCreateRequest
@@ -4737,9 +4923,6 @@ type InviteByEmailJSONRequestBody InviteByEmailJSONBody
 
 // CreateBulkUserLookupJSONRequestBody defines body for CreateBulkUserLookup for application/json ContentType.
 type CreateBulkUserLookupJSONRequestBody CreateBulkUserLookupJSONBody
-
-// CreateWhiteboardJSONRequestBody defines body for CreateWhiteboard for application/json ContentType.
-type CreateWhiteboardJSONRequestBody CreateWhiteboardJSONBody
 
 // PutWhiteboardClassificationLevelJSONRequestBody defines body for PutWhiteboardClassificationLevel for application/json ContentType.
 type PutWhiteboardClassificationLevelJSONRequestBody PutWhiteboardClassificationLevelJSONBody
@@ -5398,8 +5581,22 @@ type ClientInterface interface {
 	// GetPageVersionDetails request
 	GetPageVersionDetails(ctx context.Context, pageId int64, versionNumber int64, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetAvailableSpacePermissions request
+	GetAvailableSpacePermissions(ctx context.Context, params *GetAvailableSpacePermissionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAvailableSpaceRoles request
+	GetAvailableSpaceRoles(ctx context.Context, params *GetAvailableSpaceRolesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSpaceRolesById request
+	GetSpaceRolesById(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetSpaces request
 	GetSpaces(ctx context.Context, params *GetSpacesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSpaceWithBody request with any body
+	CreateSpaceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateSpace(ctx context.Context, body CreateSpaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSpaceById request
 	GetSpaceById(ctx context.Context, id int64, params *GetSpaceByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5433,8 +5630,16 @@ type ClientInterface interface {
 	// GetPagesInSpace request
 	GetPagesInSpace(ctx context.Context, id int64, params *GetPagesInSpaceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetSpacePermissions request
-	GetSpacePermissions(ctx context.Context, id int64, params *GetSpacePermissionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetSpacePermissionsAssignments request
+	GetSpacePermissionsAssignments(ctx context.Context, id int64, params *GetSpacePermissionsAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSpaceRoleAssignments request
+	GetSpaceRoleAssignments(ctx context.Context, id int, params *GetSpaceRoleAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetSpaceRoleAssignmentsWithBody request with any body
+	SetSpaceRoleAssignmentsWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetSpaceRoleAssignments(ctx context.Context, id int, body SetSpaceRoleAssignmentsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSpaceProperties request
 	GetSpaceProperties(ctx context.Context, spaceId int64, params *GetSpacePropertiesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5480,11 +5685,6 @@ type ClientInterface interface {
 	CreateBulkUserLookupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateBulkUserLookup(ctx context.Context, body CreateBulkUserLookupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateWhiteboardWithBody request with any body
-	CreateWhiteboardWithBody(ctx context.Context, params *CreateWhiteboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateWhiteboard(ctx context.Context, params *CreateWhiteboardParams, body CreateWhiteboardJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteWhiteboard request
 	DeleteWhiteboard(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -7715,8 +7915,68 @@ func (c *Client) GetPageVersionDetails(ctx context.Context, pageId int64, versio
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetAvailableSpacePermissions(ctx context.Context, params *GetAvailableSpacePermissionsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAvailableSpacePermissionsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAvailableSpaceRoles(ctx context.Context, params *GetAvailableSpaceRolesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAvailableSpaceRolesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSpaceRolesById(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSpaceRolesByIdRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetSpaces(ctx context.Context, params *GetSpacesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetSpacesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSpaceWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSpaceRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSpace(ctx context.Context, body CreateSpaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSpaceRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -7859,8 +8119,44 @@ func (c *Client) GetPagesInSpace(ctx context.Context, id int64, params *GetPages
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetSpacePermissions(ctx context.Context, id int64, params *GetSpacePermissionsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSpacePermissionsRequest(c.Server, id, params)
+func (c *Client) GetSpacePermissionsAssignments(ctx context.Context, id int64, params *GetSpacePermissionsAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSpacePermissionsAssignmentsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSpaceRoleAssignments(ctx context.Context, id int, params *GetSpaceRoleAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSpaceRoleAssignmentsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetSpaceRoleAssignmentsWithBody(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetSpaceRoleAssignmentsRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetSpaceRoleAssignments(ctx context.Context, id int, body SetSpaceRoleAssignmentsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetSpaceRoleAssignmentsRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -8065,30 +8361,6 @@ func (c *Client) CreateBulkUserLookupWithBody(ctx context.Context, contentType s
 
 func (c *Client) CreateBulkUserLookup(ctx context.Context, body CreateBulkUserLookupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateBulkUserLookupRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateWhiteboardWithBody(ctx context.Context, params *CreateWhiteboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateWhiteboardRequestWithBody(c.Server, params, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateWhiteboard(ctx context.Context, params *CreateWhiteboardParams, body CreateWhiteboardJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateWhiteboardRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -10101,6 +10373,22 @@ func NewGetBlogPostByIdRequest(server string, id int64, params *GetBlogPostByIdP
 		if params.IncludeFavoritedByCurrentUserStatus != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "include-favorited-by-current-user-status", runtime.ParamLocationQuery, *params.IncludeFavoritedByCurrentUserStatus); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeWebresources != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "include-webresources", runtime.ParamLocationQuery, *params.IncludeWebresources); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -17102,6 +17390,22 @@ func NewGetPageByIdRequest(server string, id int64, params *GetPageByIdParams) (
 
 		}
 
+		if params.IncludeWebresources != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "include-webresources", runtime.ParamLocationQuery, *params.IncludeWebresources); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -18638,6 +18942,234 @@ func NewGetPageVersionDetailsRequest(server string, pageId int64, versionNumber 
 	return req, nil
 }
 
+// NewGetAvailableSpacePermissionsRequest generates requests for GetAvailableSpacePermissions
+func NewGetAvailableSpacePermissionsRequest(server string, params *GetAvailableSpacePermissionsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/space-permissions")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cursor", runtime.ParamLocationQuery, *params.Cursor); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetAvailableSpaceRolesRequest generates requests for GetAvailableSpaceRoles
+func NewGetAvailableSpaceRolesRequest(server string, params *GetAvailableSpaceRolesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/space-roles")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.SpaceId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "space-id", runtime.ParamLocationQuery, *params.SpaceId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.RoleType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "role-type", runtime.ParamLocationQuery, *params.RoleType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "principal-id", runtime.ParamLocationQuery, *params.PrincipalId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PrincipalType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "principal-type", runtime.ParamLocationQuery, *params.PrincipalType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cursor", runtime.ParamLocationQuery, *params.Cursor); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetSpaceRolesByIdRequest generates requests for GetSpaceRolesById
+func NewGetSpaceRolesByIdRequest(server string, id int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/space-roles/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetSpacesRequest generates requests for GetSpaces
 func NewGetSpacesRequest(server string, params *GetSpacesParams) (*http.Request, error) {
 	var err error
@@ -18863,6 +19395,46 @@ func NewGetSpacesRequest(server string, params *GetSpacesParams) (*http.Request,
 	return req, nil
 }
 
+// NewCreateSpaceRequest calls the generic CreateSpace builder with application/json body
+func NewCreateSpaceRequest(server string, body CreateSpaceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSpaceRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateSpaceRequestWithBody generates requests for CreateSpace with any type of body
+func NewCreateSpaceRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/spaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetSpaceByIdRequest generates requests for GetSpaceById
 func NewGetSpaceByIdRequest(server string, id int64, params *GetSpaceByIdParams) (*http.Request, error) {
 	var err error
@@ -18959,6 +19531,22 @@ func NewGetSpaceByIdRequest(server string, id int64, params *GetSpaceByIdParams)
 		if params.IncludePermissions != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "include-permissions", runtime.ParamLocationQuery, *params.IncludePermissions); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeRoleAssignments != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "include-role-assignments", runtime.ParamLocationQuery, *params.IncludeRoleAssignments); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -19744,8 +20332,8 @@ func NewGetPagesInSpaceRequest(server string, id int64, params *GetPagesInSpaceP
 	return req, nil
 }
 
-// NewGetSpacePermissionsRequest generates requests for GetSpacePermissions
-func NewGetSpacePermissionsRequest(server string, id int64, params *GetSpacePermissionsParams) (*http.Request, error) {
+// NewGetSpacePermissionsAssignmentsRequest generates requests for GetSpacePermissionsAssignments
+func NewGetSpacePermissionsAssignmentsRequest(server string, id int64, params *GetSpacePermissionsAssignmentsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -19812,6 +20400,189 @@ func NewGetSpacePermissionsRequest(server string, id int64, params *GetSpacePerm
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewGetSpaceRoleAssignmentsRequest generates requests for GetSpaceRoleAssignments
+func NewGetSpaceRoleAssignmentsRequest(server string, id int, params *GetSpaceRoleAssignmentsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/spaces/%s/role-assignments", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.RoleId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "role-id", runtime.ParamLocationQuery, *params.RoleId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.RoleType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "role-type", runtime.ParamLocationQuery, *params.RoleType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "principal-id", runtime.ParamLocationQuery, *params.PrincipalId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PrincipalType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "principal-type", runtime.ParamLocationQuery, *params.PrincipalType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cursor", runtime.ParamLocationQuery, *params.Cursor); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetSpaceRoleAssignmentsRequest calls the generic SetSpaceRoleAssignments builder with application/json body
+func NewSetSpaceRoleAssignmentsRequest(server string, id int, body SetSpaceRoleAssignmentsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetSpaceRoleAssignmentsRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewSetSpaceRoleAssignmentsRequestWithBody generates requests for SetSpaceRoleAssignments with any type of body
+func NewSetSpaceRoleAssignmentsRequestWithBody(server string, id int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/spaces/%s/role-assignments", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -20641,68 +21412,6 @@ func NewCreateBulkUserLookupRequestWithBody(server string, contentType string, b
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewCreateWhiteboardRequest calls the generic CreateWhiteboard builder with application/json body
-func NewCreateWhiteboardRequest(server string, params *CreateWhiteboardParams, body CreateWhiteboardJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateWhiteboardRequestWithBody(server, params, "application/json", bodyReader)
-}
-
-// NewCreateWhiteboardRequestWithBody generates requests for CreateWhiteboard with any type of body
-func NewCreateWhiteboardRequestWithBody(server string, params *CreateWhiteboardParams, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/whiteboards")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		queryValues := queryURL.Query()
-
-		if params.Private != nil {
-
-			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "private", runtime.ParamLocationQuery, *params.Private); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), body)
@@ -21841,8 +22550,22 @@ type ClientWithResponsesInterface interface {
 	// GetPageVersionDetailsWithResponse request
 	GetPageVersionDetailsWithResponse(ctx context.Context, pageId int64, versionNumber int64, reqEditors ...RequestEditorFn) (*GetPageVersionDetailsResponse, error)
 
+	// GetAvailableSpacePermissionsWithResponse request
+	GetAvailableSpacePermissionsWithResponse(ctx context.Context, params *GetAvailableSpacePermissionsParams, reqEditors ...RequestEditorFn) (*GetAvailableSpacePermissionsResponse, error)
+
+	// GetAvailableSpaceRolesWithResponse request
+	GetAvailableSpaceRolesWithResponse(ctx context.Context, params *GetAvailableSpaceRolesParams, reqEditors ...RequestEditorFn) (*GetAvailableSpaceRolesResponse, error)
+
+	// GetSpaceRolesByIdWithResponse request
+	GetSpaceRolesByIdWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetSpaceRolesByIdResponse, error)
+
 	// GetSpacesWithResponse request
 	GetSpacesWithResponse(ctx context.Context, params *GetSpacesParams, reqEditors ...RequestEditorFn) (*GetSpacesResponse, error)
+
+	// CreateSpaceWithBodyWithResponse request with any body
+	CreateSpaceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSpaceResponse, error)
+
+	CreateSpaceWithResponse(ctx context.Context, body CreateSpaceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSpaceResponse, error)
 
 	// GetSpaceByIdWithResponse request
 	GetSpaceByIdWithResponse(ctx context.Context, id int64, params *GetSpaceByIdParams, reqEditors ...RequestEditorFn) (*GetSpaceByIdResponse, error)
@@ -21876,8 +22599,16 @@ type ClientWithResponsesInterface interface {
 	// GetPagesInSpaceWithResponse request
 	GetPagesInSpaceWithResponse(ctx context.Context, id int64, params *GetPagesInSpaceParams, reqEditors ...RequestEditorFn) (*GetPagesInSpaceResponse, error)
 
-	// GetSpacePermissionsWithResponse request
-	GetSpacePermissionsWithResponse(ctx context.Context, id int64, params *GetSpacePermissionsParams, reqEditors ...RequestEditorFn) (*GetSpacePermissionsResponse, error)
+	// GetSpacePermissionsAssignmentsWithResponse request
+	GetSpacePermissionsAssignmentsWithResponse(ctx context.Context, id int64, params *GetSpacePermissionsAssignmentsParams, reqEditors ...RequestEditorFn) (*GetSpacePermissionsAssignmentsResponse, error)
+
+	// GetSpaceRoleAssignmentsWithResponse request
+	GetSpaceRoleAssignmentsWithResponse(ctx context.Context, id int, params *GetSpaceRoleAssignmentsParams, reqEditors ...RequestEditorFn) (*GetSpaceRoleAssignmentsResponse, error)
+
+	// SetSpaceRoleAssignmentsWithBodyWithResponse request with any body
+	SetSpaceRoleAssignmentsWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetSpaceRoleAssignmentsResponse, error)
+
+	SetSpaceRoleAssignmentsWithResponse(ctx context.Context, id int, body SetSpaceRoleAssignmentsJSONRequestBody, reqEditors ...RequestEditorFn) (*SetSpaceRoleAssignmentsResponse, error)
 
 	// GetSpacePropertiesWithResponse request
 	GetSpacePropertiesWithResponse(ctx context.Context, spaceId int64, params *GetSpacePropertiesParams, reqEditors ...RequestEditorFn) (*GetSpacePropertiesResponse, error)
@@ -21923,11 +22654,6 @@ type ClientWithResponsesInterface interface {
 	CreateBulkUserLookupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBulkUserLookupResponse, error)
 
 	CreateBulkUserLookupWithResponse(ctx context.Context, body CreateBulkUserLookupJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBulkUserLookupResponse, error)
-
-	// CreateWhiteboardWithBodyWithResponse request with any body
-	CreateWhiteboardWithBodyWithResponse(ctx context.Context, params *CreateWhiteboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateWhiteboardResponse, error)
-
-	CreateWhiteboardWithResponse(ctx context.Context, params *CreateWhiteboardParams, body CreateWhiteboardJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWhiteboardResponse, error)
 
 	// DeleteWhiteboardWithResponse request
 	DeleteWhiteboardWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*DeleteWhiteboardResponse, error)
@@ -26492,6 +27218,98 @@ func (r GetPageVersionDetailsResponse) StatusCode() int {
 	return 0
 }
 
+type GetAvailableSpacePermissionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Links   *MultiEntityLinks  `json:"_links,omitempty"`
+		Results *[]SpacePermission `json:"results,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetAvailableSpacePermissionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAvailableSpacePermissionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAvailableSpaceRolesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Links   *MultiEntityLinks `json:"_links,omitempty"`
+		Results *[]SpaceRole      `json:"results,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetAvailableSpaceRolesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAvailableSpaceRolesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetSpaceRolesByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Links *struct {
+			// Base Base url of the Confluence site.
+			Base *string `json:"base,omitempty"`
+		} `json:"_links,omitempty"`
+
+		// Description The description for the space role’s usage.
+		Description *string `json:"description,omitempty"`
+
+		// DisplayName The display name for the space role.
+		DisplayName *string `json:"displayName,omitempty"`
+
+		// Id The identifier for the space role.
+		Id *string `json:"id,omitempty"`
+
+		// SpacePermissions The space permissions the space role is comprised of.
+		SpacePermissions *[]string `json:"spacePermissions,omitempty"`
+
+		// Type The role type.
+		Type *RoleType `json:"type,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSpaceRolesByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSpaceRolesByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetSpacesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -26511,6 +27329,63 @@ func (r GetSpacesResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetSpacesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateSpaceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *struct {
+		Links *struct {
+			// Base Base url of the Confluence site.
+			Base *string `json:"base,omitempty"`
+		} `json:"_links,omitempty"`
+
+		// AuthorId The account ID of the user who created this space originally.
+		AuthorId *string `json:"authorId,omitempty"`
+
+		// CreatedAt Date and time when the space was created. In format "YYYY-MM-DDTHH:mm:ss.sssZ".
+		CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+		// Description Contains fields for each representation type requested.
+		Description *SpaceDescription `json:"description,omitempty"`
+
+		// HomepageId ID of the space's homepage.
+		HomepageId *string `json:"homepageId,omitempty"`
+
+		// Icon The icon of the space
+		Icon *SpaceIcon `json:"icon,omitempty"`
+
+		// Id ID of the space.
+		Id *string `json:"id,omitempty"`
+
+		// Key Key of the space.
+		Key *string `json:"key,omitempty"`
+
+		// Name Name of the space.
+		Name *string `json:"name,omitempty"`
+
+		// Status The status of the space.
+		Status *SpaceStatus `json:"status,omitempty"`
+
+		// Type The type of space.
+		Type *SpaceType `json:"type,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateSpaceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSpaceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -26560,9 +27435,9 @@ type GetSpaceByIdResponse struct {
 			Results *[]Operation        `json:"results,omitempty"`
 		} `json:"operations,omitempty"`
 		Permissions *struct {
-			Links   *OptionalFieldLinks `json:"_links,omitempty"`
-			Meta    *OptionalFieldMeta  `json:"meta,omitempty"`
-			Results *[]SpacePermission  `json:"results,omitempty"`
+			Links   *OptionalFieldLinks          `json:"_links,omitempty"`
+			Meta    *OptionalFieldMeta           `json:"meta,omitempty"`
+			Results *[]SpacePermissionAssignment `json:"results,omitempty"`
 		} `json:"permissions,omitempty"`
 		Properties *struct {
 			Links   *OptionalFieldLinks `json:"_links,omitempty"`
@@ -26805,17 +27680,17 @@ func (r GetPagesInSpaceResponse) StatusCode() int {
 	return 0
 }
 
-type GetSpacePermissionsResponse struct {
+type GetSpacePermissionsAssignmentsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Links   *MultiEntityLinks  `json:"_links,omitempty"`
-		Results *[]SpacePermission `json:"results,omitempty"`
+		Links   *MultiEntityLinks            `json:"_links,omitempty"`
+		Results *[]SpacePermissionAssignment `json:"results,omitempty"`
 	}
 }
 
 // Status returns HTTPResponse.Status
-func (r GetSpacePermissionsResponse) Status() string {
+func (r GetSpacePermissionsAssignmentsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -26823,7 +27698,57 @@ func (r GetSpacePermissionsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetSpacePermissionsResponse) StatusCode() int {
+func (r GetSpacePermissionsAssignmentsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetSpaceRoleAssignmentsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Links   *MultiEntityLinks      `json:"_links,omitempty"`
+		Results *[]SpaceRoleAssignment `json:"results,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSpaceRoleAssignmentsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSpaceRoleAssignmentsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SetSpaceRoleAssignmentsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Links   *MultiEntityLinks      `json:"_links,omitempty"`
+		Results *[]SpaceRoleAssignment `json:"results,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r SetSpaceRoleAssignmentsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetSpaceRoleAssignmentsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -27079,64 +28004,6 @@ func (r CreateBulkUserLookupResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateBulkUserLookupResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateWhiteboardResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		Links *struct {
-			// Base Base url of the Confluence site.
-			Base *string `json:"base,omitempty"`
-		} `json:"_links,omitempty"`
-
-		// AuthorId The account ID of the user who created this whiteboard originally.
-		AuthorId *string `json:"authorId,omitempty"`
-
-		// CreatedAt Date and time when the whiteboard was created. In format "YYYY-MM-DDTHH:mm:ss.sssZ".
-		CreatedAt *time.Time `json:"createdAt,omitempty"`
-
-		// Id ID of the whiteboard.
-		Id *string `json:"id,omitempty"`
-
-		// OwnerId The account ID of the user who owns this whiteboard.
-		OwnerId *string `json:"ownerId,omitempty"`
-
-		// ParentId ID of the parent content, or null if there is no parent content.
-		ParentId *string `json:"parentId,omitempty"`
-
-		// ParentType Content type of the parent, or null if there is no parent.
-		ParentType *ParentContentType `json:"parentType,omitempty"`
-
-		// Position Position of the whiteboard within the given parent page tree.
-		Position *int32 `json:"position"`
-
-		// Status The status of the content.
-		Status *ContentStatus `json:"status,omitempty"`
-
-		// Title Title of the whiteboard.
-		Title *string `json:"title,omitempty"`
-
-		// Type The content type of the object.
-		Type    *string  `json:"type,omitempty"`
-		Version *Version `json:"version,omitempty"`
-	}
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateWhiteboardResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateWhiteboardResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -29046,6 +29913,33 @@ func (c *ClientWithResponses) GetPageVersionDetailsWithResponse(ctx context.Cont
 	return ParseGetPageVersionDetailsResponse(rsp)
 }
 
+// GetAvailableSpacePermissionsWithResponse request returning *GetAvailableSpacePermissionsResponse
+func (c *ClientWithResponses) GetAvailableSpacePermissionsWithResponse(ctx context.Context, params *GetAvailableSpacePermissionsParams, reqEditors ...RequestEditorFn) (*GetAvailableSpacePermissionsResponse, error) {
+	rsp, err := c.GetAvailableSpacePermissions(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAvailableSpacePermissionsResponse(rsp)
+}
+
+// GetAvailableSpaceRolesWithResponse request returning *GetAvailableSpaceRolesResponse
+func (c *ClientWithResponses) GetAvailableSpaceRolesWithResponse(ctx context.Context, params *GetAvailableSpaceRolesParams, reqEditors ...RequestEditorFn) (*GetAvailableSpaceRolesResponse, error) {
+	rsp, err := c.GetAvailableSpaceRoles(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAvailableSpaceRolesResponse(rsp)
+}
+
+// GetSpaceRolesByIdWithResponse request returning *GetSpaceRolesByIdResponse
+func (c *ClientWithResponses) GetSpaceRolesByIdWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetSpaceRolesByIdResponse, error) {
+	rsp, err := c.GetSpaceRolesById(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSpaceRolesByIdResponse(rsp)
+}
+
 // GetSpacesWithResponse request returning *GetSpacesResponse
 func (c *ClientWithResponses) GetSpacesWithResponse(ctx context.Context, params *GetSpacesParams, reqEditors ...RequestEditorFn) (*GetSpacesResponse, error) {
 	rsp, err := c.GetSpaces(ctx, params, reqEditors...)
@@ -29053,6 +29947,23 @@ func (c *ClientWithResponses) GetSpacesWithResponse(ctx context.Context, params 
 		return nil, err
 	}
 	return ParseGetSpacesResponse(rsp)
+}
+
+// CreateSpaceWithBodyWithResponse request with arbitrary body returning *CreateSpaceResponse
+func (c *ClientWithResponses) CreateSpaceWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSpaceResponse, error) {
+	rsp, err := c.CreateSpaceWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSpaceResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateSpaceWithResponse(ctx context.Context, body CreateSpaceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSpaceResponse, error) {
+	rsp, err := c.CreateSpace(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSpaceResponse(rsp)
 }
 
 // GetSpaceByIdWithResponse request returning *GetSpaceByIdResponse
@@ -29153,13 +30064,39 @@ func (c *ClientWithResponses) GetPagesInSpaceWithResponse(ctx context.Context, i
 	return ParseGetPagesInSpaceResponse(rsp)
 }
 
-// GetSpacePermissionsWithResponse request returning *GetSpacePermissionsResponse
-func (c *ClientWithResponses) GetSpacePermissionsWithResponse(ctx context.Context, id int64, params *GetSpacePermissionsParams, reqEditors ...RequestEditorFn) (*GetSpacePermissionsResponse, error) {
-	rsp, err := c.GetSpacePermissions(ctx, id, params, reqEditors...)
+// GetSpacePermissionsAssignmentsWithResponse request returning *GetSpacePermissionsAssignmentsResponse
+func (c *ClientWithResponses) GetSpacePermissionsAssignmentsWithResponse(ctx context.Context, id int64, params *GetSpacePermissionsAssignmentsParams, reqEditors ...RequestEditorFn) (*GetSpacePermissionsAssignmentsResponse, error) {
+	rsp, err := c.GetSpacePermissionsAssignments(ctx, id, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetSpacePermissionsResponse(rsp)
+	return ParseGetSpacePermissionsAssignmentsResponse(rsp)
+}
+
+// GetSpaceRoleAssignmentsWithResponse request returning *GetSpaceRoleAssignmentsResponse
+func (c *ClientWithResponses) GetSpaceRoleAssignmentsWithResponse(ctx context.Context, id int, params *GetSpaceRoleAssignmentsParams, reqEditors ...RequestEditorFn) (*GetSpaceRoleAssignmentsResponse, error) {
+	rsp, err := c.GetSpaceRoleAssignments(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSpaceRoleAssignmentsResponse(rsp)
+}
+
+// SetSpaceRoleAssignmentsWithBodyWithResponse request with arbitrary body returning *SetSpaceRoleAssignmentsResponse
+func (c *ClientWithResponses) SetSpaceRoleAssignmentsWithBodyWithResponse(ctx context.Context, id int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetSpaceRoleAssignmentsResponse, error) {
+	rsp, err := c.SetSpaceRoleAssignmentsWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetSpaceRoleAssignmentsResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetSpaceRoleAssignmentsWithResponse(ctx context.Context, id int, body SetSpaceRoleAssignmentsJSONRequestBody, reqEditors ...RequestEditorFn) (*SetSpaceRoleAssignmentsResponse, error) {
+	rsp, err := c.SetSpaceRoleAssignments(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetSpaceRoleAssignmentsResponse(rsp)
 }
 
 // GetSpacePropertiesWithResponse request returning *GetSpacePropertiesResponse
@@ -29307,23 +30244,6 @@ func (c *ClientWithResponses) CreateBulkUserLookupWithResponse(ctx context.Conte
 		return nil, err
 	}
 	return ParseCreateBulkUserLookupResponse(rsp)
-}
-
-// CreateWhiteboardWithBodyWithResponse request with arbitrary body returning *CreateWhiteboardResponse
-func (c *ClientWithResponses) CreateWhiteboardWithBodyWithResponse(ctx context.Context, params *CreateWhiteboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateWhiteboardResponse, error) {
-	rsp, err := c.CreateWhiteboardWithBody(ctx, params, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateWhiteboardResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateWhiteboardWithResponse(ctx context.Context, params *CreateWhiteboardParams, body CreateWhiteboardJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWhiteboardResponse, error) {
-	rsp, err := c.CreateWhiteboard(ctx, params, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateWhiteboardResponse(rsp)
 }
 
 // DeleteWhiteboardWithResponse request returning *DeleteWhiteboardResponse
@@ -34361,6 +35281,110 @@ func ParseGetPageVersionDetailsResponse(rsp *http.Response) (*GetPageVersionDeta
 	return response, nil
 }
 
+// ParseGetAvailableSpacePermissionsResponse parses an HTTP response from a GetAvailableSpacePermissionsWithResponse call
+func ParseGetAvailableSpacePermissionsResponse(rsp *http.Response) (*GetAvailableSpacePermissionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAvailableSpacePermissionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Links   *MultiEntityLinks  `json:"_links,omitempty"`
+			Results *[]SpacePermission `json:"results,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAvailableSpaceRolesResponse parses an HTTP response from a GetAvailableSpaceRolesWithResponse call
+func ParseGetAvailableSpaceRolesResponse(rsp *http.Response) (*GetAvailableSpaceRolesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAvailableSpaceRolesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Links   *MultiEntityLinks `json:"_links,omitempty"`
+			Results *[]SpaceRole      `json:"results,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSpaceRolesByIdResponse parses an HTTP response from a GetSpaceRolesByIdWithResponse call
+func ParseGetSpaceRolesByIdResponse(rsp *http.Response) (*GetSpaceRolesByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSpaceRolesByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Links *struct {
+				// Base Base url of the Confluence site.
+				Base *string `json:"base,omitempty"`
+			} `json:"_links,omitempty"`
+
+			// Description The description for the space role’s usage.
+			Description *string `json:"description,omitempty"`
+
+			// DisplayName The display name for the space role.
+			DisplayName *string `json:"displayName,omitempty"`
+
+			// Id The identifier for the space role.
+			Id *string `json:"id,omitempty"`
+
+			// SpacePermissions The space permissions the space role is comprised of.
+			SpacePermissions *[]string `json:"spacePermissions,omitempty"`
+
+			// Type The role type.
+			Type *RoleType `json:"type,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetSpacesResponse parses an HTTP response from a GetSpacesWithResponse call
 func ParseGetSpacesResponse(rsp *http.Response) (*GetSpacesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -34384,6 +35408,67 @@ func ParseGetSpacesResponse(rsp *http.Response) (*GetSpacesResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateSpaceResponse parses an HTTP response from a CreateSpaceWithResponse call
+func ParseCreateSpaceResponse(rsp *http.Response) (*CreateSpaceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSpaceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest struct {
+			Links *struct {
+				// Base Base url of the Confluence site.
+				Base *string `json:"base,omitempty"`
+			} `json:"_links,omitempty"`
+
+			// AuthorId The account ID of the user who created this space originally.
+			AuthorId *string `json:"authorId,omitempty"`
+
+			// CreatedAt Date and time when the space was created. In format "YYYY-MM-DDTHH:mm:ss.sssZ".
+			CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+			// Description Contains fields for each representation type requested.
+			Description *SpaceDescription `json:"description,omitempty"`
+
+			// HomepageId ID of the space's homepage.
+			HomepageId *string `json:"homepageId,omitempty"`
+
+			// Icon The icon of the space
+			Icon *SpaceIcon `json:"icon,omitempty"`
+
+			// Id ID of the space.
+			Id *string `json:"id,omitempty"`
+
+			// Key Key of the space.
+			Key *string `json:"key,omitempty"`
+
+			// Name Name of the space.
+			Name *string `json:"name,omitempty"`
+
+			// Status The status of the space.
+			Status *SpaceStatus `json:"status,omitempty"`
+
+			// Type The type of space.
+			Type *SpaceType `json:"type,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
 
 	}
 
@@ -34445,9 +35530,9 @@ func ParseGetSpaceByIdResponse(rsp *http.Response) (*GetSpaceByIdResponse, error
 				Results *[]Operation        `json:"results,omitempty"`
 			} `json:"operations,omitempty"`
 			Permissions *struct {
-				Links   *OptionalFieldLinks `json:"_links,omitempty"`
-				Meta    *OptionalFieldMeta  `json:"meta,omitempty"`
-				Results *[]SpacePermission  `json:"results,omitempty"`
+				Links   *OptionalFieldLinks          `json:"_links,omitempty"`
+				Meta    *OptionalFieldMeta           `json:"meta,omitempty"`
+				Results *[]SpacePermissionAssignment `json:"results,omitempty"`
 			} `json:"permissions,omitempty"`
 			Properties *struct {
 				Links   *OptionalFieldLinks `json:"_links,omitempty"`
@@ -34700,15 +35785,15 @@ func ParseGetPagesInSpaceResponse(rsp *http.Response) (*GetPagesInSpaceResponse,
 	return response, nil
 }
 
-// ParseGetSpacePermissionsResponse parses an HTTP response from a GetSpacePermissionsWithResponse call
-func ParseGetSpacePermissionsResponse(rsp *http.Response) (*GetSpacePermissionsResponse, error) {
+// ParseGetSpacePermissionsAssignmentsResponse parses an HTTP response from a GetSpacePermissionsAssignmentsWithResponse call
+func ParseGetSpacePermissionsAssignmentsResponse(rsp *http.Response) (*GetSpacePermissionsAssignmentsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetSpacePermissionsResponse{
+	response := &GetSpacePermissionsAssignmentsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -34716,8 +35801,66 @@ func ParseGetSpacePermissionsResponse(rsp *http.Response) (*GetSpacePermissionsR
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Links   *MultiEntityLinks  `json:"_links,omitempty"`
-			Results *[]SpacePermission `json:"results,omitempty"`
+			Links   *MultiEntityLinks            `json:"_links,omitempty"`
+			Results *[]SpacePermissionAssignment `json:"results,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSpaceRoleAssignmentsResponse parses an HTTP response from a GetSpaceRoleAssignmentsWithResponse call
+func ParseGetSpaceRoleAssignmentsResponse(rsp *http.Response) (*GetSpaceRoleAssignmentsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSpaceRoleAssignmentsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Links   *MultiEntityLinks      `json:"_links,omitempty"`
+			Results *[]SpaceRoleAssignment `json:"results,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetSpaceRoleAssignmentsResponse parses an HTTP response from a SetSpaceRoleAssignmentsWithResponse call
+func ParseSetSpaceRoleAssignmentsResponse(rsp *http.Response) (*SetSpaceRoleAssignmentsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetSpaceRoleAssignmentsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Links   *MultiEntityLinks      `json:"_links,omitempty"`
+			Results *[]SpaceRoleAssignment `json:"results,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -34999,68 +36142,6 @@ func ParseCreateBulkUserLookupResponse(rsp *http.Response) (*CreateBulkUserLooku
 		var dest struct {
 			Links   *MultiEntityLinks `json:"_links,omitempty"`
 			Results *[]User           `json:"results,omitempty"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateWhiteboardResponse parses an HTTP response from a CreateWhiteboardWithResponse call
-func ParseCreateWhiteboardResponse(rsp *http.Response) (*CreateWhiteboardResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateWhiteboardResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Links *struct {
-				// Base Base url of the Confluence site.
-				Base *string `json:"base,omitempty"`
-			} `json:"_links,omitempty"`
-
-			// AuthorId The account ID of the user who created this whiteboard originally.
-			AuthorId *string `json:"authorId,omitempty"`
-
-			// CreatedAt Date and time when the whiteboard was created. In format "YYYY-MM-DDTHH:mm:ss.sssZ".
-			CreatedAt *time.Time `json:"createdAt,omitempty"`
-
-			// Id ID of the whiteboard.
-			Id *string `json:"id,omitempty"`
-
-			// OwnerId The account ID of the user who owns this whiteboard.
-			OwnerId *string `json:"ownerId,omitempty"`
-
-			// ParentId ID of the parent content, or null if there is no parent content.
-			ParentId *string `json:"parentId,omitempty"`
-
-			// ParentType Content type of the parent, or null if there is no parent.
-			ParentType *ParentContentType `json:"parentType,omitempty"`
-
-			// Position Position of the whiteboard within the given parent page tree.
-			Position *int32 `json:"position"`
-
-			// Status The status of the content.
-			Status *ContentStatus `json:"status,omitempty"`
-
-			// Title Title of the whiteboard.
-			Title *string `json:"title,omitempty"`
-
-			// Type The content type of the object.
-			Type    *string  `json:"type,omitempty"`
-			Version *Version `json:"version,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
