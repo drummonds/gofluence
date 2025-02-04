@@ -36,8 +36,13 @@ func NewHeadingNode(level int, text string) *HeadingNode {
 	return &node
 }
 
-func NewCodeBlockNode() *CodeBlockNode {
+func NewCodeBlockNode(language, text string) *CodeBlockNode {
 	node := CodeBlockNode{Type: "codeBlock"}
+	node.Attrs.Language = &language
+	textNode := TextNode{}
+	textNode.Text = text
+	textNode.Type = "text"
+	node.Content = append(node.Content, textNode)
 	return &node
 }
 
